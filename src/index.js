@@ -1,6 +1,7 @@
 // window.addEventListener("load", () => {
 
 
+
   window.counter = 0;
   window.counter2 = 0;
   if (!Element.prototype.matches) {
