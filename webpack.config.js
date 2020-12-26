@@ -12,7 +12,7 @@ module.exports = {
 
   // Path to your entry point. From this file Webpack will begin his work
   entry: {
-    'CoCreate-boilerplate': './src/CoCreate-boilerplate.js',
+    'CoCreate-observer': './src/CoCreate-observer.js',
   },
 
   // Path and filename of your result bundle.
