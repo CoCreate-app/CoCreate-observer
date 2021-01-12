@@ -1,6 +1,6 @@
 {
-  "name": "CoCreate-boilerplate",
-  "version": "0.1.0",
+  "name": "@CoCreate/observer",
+  "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CoCreate-app/CoCreate-boilerplate.git"
+    "url": "git+https://github.com/CoCreate-app/CoCreate-observer.git"
   },
   "author": "CoCreate LLC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CoCreate-app/CoCreate-boilerplate/issues"
+    "url": "https://github.com/CoCreate-app/CoCreate-observer/issues"
   },
-  "homepage": "https://github.com/CoCreate-app/CoCreate-boilerplate#readme",
+  "homepage": "https://github.com/CoCreate-app/CoCreate-observer#readme",
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
