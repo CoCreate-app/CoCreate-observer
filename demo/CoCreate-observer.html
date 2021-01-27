@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://cdn.cocreate.app/favicon.ico" type="image/ico" sizes="16x16">
+    <title>CoCreate-observer | CoCreate</title>
+    <meta name="description" content="Utility first css framework, design faster and improve on your css by using native inline styles as classes. No learning curve, use what you already know" />
+    <meta name="keywords" content="helper classes, utility classes, css framework, css library, inline style classes" />
+    <meta name="robots" content="index,follow" />
+
+    <!-- CoCreate CSS -->
+    <link rel="stylesheet" href="https://server.cocreate.app/css/CoCreate.min.css" type="text/css" />
+  
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" crossorigin="anonymous" />    
+  </head>
+  
+  <body>
+    
+
+    <div>testing observer</div>
+    <div aa="22">testing observer</div>
+    <div bb="33">testing observer</div>
+    <!--CoCreate Plugins-->
+    <script src="https://server.cocreate.app/CoCreate-components/CoCreate-observer/src/CoCreate-observer.js"></script>
+    <script type="text/javascript" >
+      CoCreateObserver.add({ 
+      	name: 'CoCreateFetchInit', // no usage, just to provide for console debugging 
+      	observe: ['subtree', 'childList'], // the same parameters of options in #https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe
+       	include: ".init",
+      	task: function(mutation) {
+      		console.log('created element----------------');
+   
+      	}
+      })
+      
+      
+      let el = document.body.children[0].cloneNode(true); 
+      el.setAttribute('class','init') ;
+      let el2 = document.body.children[0].cloneNode(true); 
+      let el3 = document.body.children[0].cloneNode(true); 
+      // el2.setAttribute('class','init') ;
+      el3.setAttribute('class','init') ;
+      el3.append(el2);
+      document.body.append(el);
+      document.body.append(el2);
+    </script>
+  </body>
+</html>
