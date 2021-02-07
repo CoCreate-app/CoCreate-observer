@@ -27,11 +27,11 @@
     <!--CoCreate Plugins-->
     <script src="https://server.cocreate.app/CoCreate-components/CoCreate-observer/src/CoCreate-observer.js"></script>
     <script type="text/javascript" >
-      CoCreateObserver.add({ 
+      CoCreate.observer.add({ 
       	name: 'CoCreateFetchInit', // no usage, just to provide for console debugging 
       	observe: ['subtree', 'childList'], // the same parameters of options in #https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe
        	include: ".init",
-      	task: function(mutation) {
+      	callback: function(mutation) {
       		console.log('created element----------------');
    
       	}

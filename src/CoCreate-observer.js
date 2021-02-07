@@ -1,13 +1,13 @@
 // window.addEventListener("load", () => {
 
 /*
-CoCreateObserver.add({ 
+CoCreate.observer.add({ 
 	name: 'CoCreateFetchInit', // no usage, just to provide for console debugging 
 	observe: ['subtree', 'childList','attributes'], // the same parameters of options in #https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe
 	attributes: ['data-fetch_collection'], // it doesn't count added nodes or remove nodes
 	include: ".classname", // a selector to select only elements that matches
 	exclude: ".classname", // a selector to exclude elements from processing
-	task: function(mutation) { // a function which gets a mutation object according to #https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord
+	callback: function(mutation) { // a function which gets a mutation object according to #https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord
 		CoCreateFetch.initElement(mutation.target)
 	}
 })
@@ -68,13 +68,13 @@ const CoCreateObserver = {
     this.add(data);
   },
   
-  add: function({ observe, include, exclude, attributes, name, task }) {
+  add: function({ observe, include, exclude, attributes, name, callback }) {
     if (observe.some(x => x == "childList")) {
-      this.initTasks.set(task, { observe, include, exclude, attributes, name });
+      this.initTasks.set(callback, { observe, include, exclude, attributes, name });
     }
     
     if (observe.some(x =>  x == "attributes")) {
-      this.attrTasks.set(task, { observe, include, exclude, attributes, name });
+      this.attrTasks.set(callback, { observe, include, exclude, attributes, name });
     }
   },
   remove: function({ include, exclude, name }) {
@@ -124,7 +124,7 @@ const CoCreateObserver = {
         
         if (el.created) return;
         
-        callbackFunc.apply(null, [{target: el}]);
+        callbackFunc.apply(null, [{type: mutation.type, target: el}]);
       })
     });
     
