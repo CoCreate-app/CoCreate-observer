@@ -110,7 +110,7 @@ const CoCreateObserver = {
   __initCallback: function(mutation) {
     let addedNodes = Array.from(mutation.addedNodes);
     
-    this.initTasks.forEach(({observe, include, exclude, attributes, name}, callbackFunc) => {
+    this.initTasks.forEach(({observe, include, exclude, attributes, name}, callback) => {
 
       mutation.addedNodes.forEach((el) => {
         if (!el.tagName) return;
@@ -124,7 +124,7 @@ const CoCreateObserver = {
         
         if (el.created) return;
         
-        callbackFunc.apply(null, [{type: mutation.type, target: el}]);
+        callback.apply(null, [{type: mutation.type, target: el}]);
       })
     });
     
@@ -136,7 +136,7 @@ const CoCreateObserver = {
       if (include && !mutation.target.matches(include)) return;
       if (exclude && mutation.target.matches(exclude)) return;
     }
-    this.attrTasks.forEach(({observe, include, exclude, attributes, name}, callbackFunc) => {
+    this.attrTasks.forEach(({observe, include, exclude, attributes, name}, callback) => {
       if (attributes && mutation.attributeName && !attributes.includes(mutation.attributeName)) {
         return;
       }
@@ -146,7 +146,7 @@ const CoCreateObserver = {
       if (mutation.attributeName) {
         let newValue = mutation.target.getAttribute(mutation.attributeName);
         if (newValue != mutation.oldValue) {
-          callbackFunc.apply(null, [mutation]);
+          callback.apply(null, [mutation]);
         }
       }      
       
