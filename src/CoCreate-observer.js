@@ -1,7 +1,7 @@
 // window.addEventListener("load", () => {
 
 /*
-CoCreate.observer.add({ 
+CoCreate.observer.init({ 
 	name: 'CoCreateFetchInit', // no usage, just to provide for console debugging 
 	observe: ['subtree', 'childList','attributes'], // the same parameters of options in #https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe
 	attributes: ['data-fetch_collection'], // it doesn't count added nodes or remove nodes
@@ -64,11 +64,11 @@ const CoCreateObserver = {
     );
   },
   
-  init: function(data) {
-    this.add(data);
-  },
+  // init: function(data) {
+  //   this.add(data);
+  // },
   
-  add: function({ observe, include, exclude, attributes, name, callback }) {
+  init: function({ observe, include, exclude, attributes, name, callback }) {
     if (observe.some(x => x == "childList")) {
       this.initTasks.set(callback, { observe, include, exclude, attributes, name });
     }
