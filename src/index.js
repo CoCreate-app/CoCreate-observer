@@ -23,9 +23,11 @@ CoCreate.observer.init({
  * 
  * @return null
  */
-
+window.profiler = {}
 window.counter = 0;
 window.counter2 = 0;
+window.targets = {};
+window.attributeName = {};
 if (!Element.prototype.matches) {
   Element.prototype.matches =
     Element.prototype.matchesSelector ||
@@ -50,93 +52,102 @@ const CoCreateObserver = {
   __init: function() {
     const self = this;
     const observer = new MutationObserver((mutationsList, observer) => self.__callback(mutationsList, observer));
-    
+
     // setTimeout(()=>{
-    observer.observe(document.body, 
-      {
-        attributes: true,
-        childList: true,
-        subtree: true,
-        characterData: false,
-        attributeOldValue: true,
-        characterData: true,
-      }
-    );
+    observer.observe(document.body, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      characterData: false,
+      attributeOldValue: true,
+      characterData: true,
+    });
   },
-  
+
   // init: function(data) {
   //   this.add(data);
   // },
-  
+
   init: function({ observe, include, exclude, attributes, name, callback }) {
     if (observe.some(x => x == "childList")) {
       this.initTasks.set(callback, { observe, include, exclude, attributes, name });
     }
-    
-    if (observe.some(x =>  x == "attributes")) {
+
+    if (observe.some(x => x == "attributes")) {
       this.attrTasks.set(callback, { observe, include, exclude, attributes, name });
     }
   },
-  remove: function({ include, exclude, name }) {
-    this.rules.set(name, {include, exclude});
-    this.rulesArray = Array.from(this.rules);
+  remove: function(callback) {
+    this.initTasks.delete(callback)
+    this.attrTasks.delete(callback)
   },
-  
+
   addRule: function({ include, exclude, name }) {
-    this.rules.set(name, {include, exclude});
+    this.rules.set(name, { include, exclude });
     this.rulesArray = Array.from(this.rules);
   },
-  
-  removeRule: function ({name}) {
+
+  removeRule: function({ name }) {
     this.rules.delete(name);
     this.rulesArray = Array.from(this.rules);
   },
-  
+
   __callback: function(mutationsList, observer) {
     // console.log(this)
+    window.counter++;
     for (let mutation of mutationsList) {
       if (mutation.type == "childList" && mutation.addedNodes.length > 0) {
         //. run init functions
-        this.__initCallback(mutation)    
+        this.__initCallback(mutation)
       }
-      
+
       if (mutation.type == "attributes") {
         //. run attributes functions
         this.__attrCallback(mutation);
       }
     }
   },
-  
+
   __initCallback: function(mutation) {
     let addedNodes = Array.from(mutation.addedNodes);
-    
-    this.initTasks.forEach(({observe, include, exclude, attributes, name}, callback) => {
+
+    this.initTasks.forEach(({ observe, include, exclude, attributes, name }, callback) => {
 
       mutation.addedNodes.forEach((el) => {
         if (!el.tagName) return;
-        
+
         if (include && !(el.matches(include) || el.querySelector(include))) {
           return
-        } 
+        }
         if (exclude && (el.matches(exclude) || el.querySelector(exclude))) {
           return;
         }
-        
+
         if (el.created) return;
-        
-        callback.apply(null, [{type: mutation.type, target: el}]);
+        window.counter2++;
+        window.profiler[name] = window.profiler[name] != undefined ? window.profiler[name] + 1 : 0;
+        window.targets[mutation.target.id || mutation.target.tagName] =
+          window.targets[mutation.target.id || mutation.target.tagName] != undefined ?
+          window.targets[mutation.target.id || mutation.target.tagName] + 1 :
+          0;
+
+        window.attributeName[mutation.attributeName] =
+          window.attributeName[mutation.attributeName] != undefined ?
+          window.attributeName[mutation.attributeName] + 1 :
+          0;
+        callback.apply(null, [{ type: mutation.type, target: el }]);
       })
     });
-    
+
     addedNodes.map(el => el.created = true);
   },
-  
+
   __attrCallback: function(mutation) {
     for (let [name, { include, exclude }] of this.rulesArray) {
       if (include && !mutation.target.matches(include)) return;
       if (exclude && mutation.target.matches(exclude)) return;
     }
-    this.attrTasks.forEach(({observe, include, exclude, attributes, name}, callback) => {
+    this.attrTasks.forEach(({ observe, include, exclude, attributes, name }, callback) => {
       if (attributes && mutation.attributeName && !attributes.includes(mutation.attributeName)) {
         return;
       }
@@ -146,33 +157,44 @@ const CoCreateObserver = {
       if (mutation.attributeName) {
         let newValue = mutation.target.getAttribute(mutation.attributeName);
         if (newValue != mutation.oldValue) {
+          window.counter2++;
+          window.profiler[name] = window.profiler[name] != undefined ? window.profiler[name] + 1 : 0;
+          window.targets[mutation.target.id || mutation.target.tagName] =
+            window.targets[mutation.target.id || mutation.target.tagName] != undefined ?
+            window.targets[mutation.target.id || mutation.target.tagName] + 1 :
+            0;
+
+          window.attributeName[mutation.attributeName] =
+            window.attributeName[mutation.attributeName] != undefined ?
+            window.attributeName[mutation.attributeName] + 1 :
+            0;
           callback.apply(null, [mutation]);
         }
-      }      
-      
+      }
+
     })
   },
-  
+
   setInitialized: function(element, type) {
-		// element.setAttribute(`initialized_${type}`, "true");
-		type = type || "";
-		let key = "co_initialized_" + type;
-		element[key] = true;
-	},
-	
-	getInitialized: function(element, type) {
-		type = type || "";
-		let key = "co_initialized_" + type;
-		if (!element[key]) {
-			return false;
-		} else {
-			return true;
-		}
-	}
+    // element.setAttribute(`initialized_${type}`, "true");
+    type = type || "";
+    let key = "co_initialized_" + type;
+    element[key] = true;
+  },
+
+  getInitialized: function(element, type) {
+    type = type || "";
+    let key = "co_initialized_" + type;
+    if (!element[key]) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
 }
 
 CoCreateObserver.__init();
 
-window.CoCreateObserver = CoCreateObserver;
 
 export default CoCreateObserver;
