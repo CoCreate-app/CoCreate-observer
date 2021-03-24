@@ -69,13 +69,16 @@ const CoCreateObserver = {
   // },
 
   init: function({ observe, include, exclude, attributes, name, callback }) {
-    if (observe.some(x => x == "childList")) {
-      this.initTasks.set(callback, { observe, include, exclude, attributes, name });
-    }
+    // if (name == 'ccAttribute' || name == 'ccCss') {
+      if (observe.some(x => x == "childList")) {
+        this.initTasks.set(callback, { observe, include, exclude, attributes, name });
+      }
 
-    if (observe.some(x => x == "attributes")) {
-      this.attrTasks.set(callback, { observe, include, exclude, attributes, name });
-    }
+      if (observe.some(x => x == "attributes")) {
+        this.attrTasks.set(callback, { observe, include, exclude, attributes, name });
+      }
+    // }
+
   },
   remove: function(callback) {
     this.initTasks.delete(callback)
