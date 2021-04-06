@@ -69,8 +69,6 @@ const CoCreateObserver = {
   // },
 
   init: function({ observe, include, exclude, attributes, name, callback }) {
-    console.log(' aaaaaaaaaaaaaa observer init ',name)
-
     // if (name == 'ccAttribute' || name == 'ccCss') {
       if (observe.some(x => x == "childList")) {
         this.initTasks.set(callback, { observe, include, exclude, attributes, name });
@@ -144,7 +142,7 @@ const CoCreateObserver = {
       })
     });
 
-    // addedNodes.map(el => el.created = true);
+    addedNodes.map(el => el.created = true);
   },
 
   __attrCallback: function(mutation) {
@@ -162,17 +160,17 @@ const CoCreateObserver = {
       if (mutation.attributeName) {
         let newValue = mutation.target.getAttribute(mutation.attributeName);
         if (newValue != mutation.oldValue) {
-          // window.counter2++;
-          // window.profiler[name] = window.profiler[name] != undefined ? window.profiler[name] + 1 : 0;
-          // window.targets[mutation.target.id || mutation.target.tagName] =
-          //   window.targets[mutation.target.id || mutation.target.tagName] != undefined ?
-          //   window.targets[mutation.target.id || mutation.target.tagName] + 1 :
-          //   0;
+          window.counter2++;
+          window.profiler[name] = window.profiler[name] != undefined ? window.profiler[name] + 1 : 0;
+          window.targets[mutation.target.id || mutation.target.tagName] =
+            window.targets[mutation.target.id || mutation.target.tagName] != undefined ?
+            window.targets[mutation.target.id || mutation.target.tagName] + 1 :
+            0;
 
-          // window.attributeName[mutation.attributeName] =
-          //   window.attributeName[mutation.attributeName] != undefined ?
-          //   window.attributeName[mutation.attributeName] + 1 :
-          //   0;
+          window.attributeName[mutation.attributeName] =
+            window.attributeName[mutation.attributeName] != undefined ?
+            window.attributeName[mutation.attributeName] + 1 :
+            0;
           callback.apply(null, [mutation]);
         }
       }
