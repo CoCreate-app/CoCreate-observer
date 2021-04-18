@@ -9,7 +9,7 @@ A simple observer component in vanilla javascript. Easily configured using HTML5
 
 ![CoCreate-observer](https://cdn.cocreate.app/docs/CoCreate-observer.gif)
 
-## [Docs & Demo](https://cocreate.app/docs/clone)
+## [Docs & Demo](https://cocreate.app/docs/observer)
 
 For a complete guide and working demo refer to the [doumentation](https://cocreate.app/docs/observer)
 
