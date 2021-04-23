@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.0.2...v1.0.3) (2021-04-23)
+
+
+### Bug Fixes
+
+* readme and documentation. Removed securitykeys ([1a7ae6c](https://github.com/CoCreate-app/CoCreate-observer/commit/1a7ae6c941b6b90541486ac959f3bef7f9a149b0))
+
 ## [1.0.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.0.1...v1.0.2) (2021-04-19)
 
 
