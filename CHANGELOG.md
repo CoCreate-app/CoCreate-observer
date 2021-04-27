@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.0.3...v1.0.4) (2021-04-27)
+
+
+### Bug Fixes
+
+* Update to readme, demo, added cdn scripts ([a69bb72](https://github.com/CoCreate-app/CoCreate-observer/commit/a69bb7226ed0a986c956ad732565454c1185ab1d))
+
 ## [1.0.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.0.2...v1.0.3) (2021-04-23)
 
 
