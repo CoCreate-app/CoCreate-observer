@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.0.4...v1.0.5) (2021-04-27)
+
+
+### Bug Fixes
+
+* add host in docs ([b605770](https://github.com/CoCreate-app/CoCreate-observer/commit/b605770cdf4f5189e6798cb94025f1d260ef90a7))
+
 ## [1.0.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.0.3...v1.0.4) (2021-04-27)
 
 
