@@ -10,7 +10,7 @@ module.exports = {
             "path": "./docs/index.html",
             "collection": "files",
             "document_id": "602079ba3c260207bf49cab6",
-            "key": "html",
+            "key": "src",
             "data":{
                 "name": "observer Doc",
                 "domains": ["cocreate.app", "server.cocreate.app", "ws.cocreate.app"],
