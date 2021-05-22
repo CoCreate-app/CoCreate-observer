@@ -69,16 +69,16 @@ const CoCreateObserver = {
   // },
 
   init: function({ observe, include, exclude, attributes, name, callback }) {
-    console.log(' aaaaaaaaaaaaaa observer init ',name)
+    console.log(' aaaaaaaaaaaaaa observer init ', name)
 
     // if (name == 'ccAttribute' || name == 'ccCss') {
-      if (observe.some(x => x == "childList")) {
-        this.initTasks.set(callback, { observe, include, exclude, attributes, name });
-      }
+    if (observe.some(x => x == "childList")) {
+      this.initTasks.set(callback, { observe, include, exclude, attributes, name });
+    }
 
-      if (observe.some(x => x == "attributes")) {
-        this.attrTasks.set(callback, { observe, include, exclude, attributes, name });
-      }
+    if (observe.some(x => x == "attributes")) {
+      this.attrTasks.set(callback, { observe, include, exclude, attributes, name });
+    }
     // }
 
   },
@@ -114,7 +114,6 @@ const CoCreateObserver = {
   },
 
   __initCallback: function(mutation) {
-    let addedNodes = Array.from(mutation.addedNodes);
 
     this.initTasks.forEach(({ observe, include, exclude, attributes, name }, callback) => {
 
@@ -128,20 +127,24 @@ const CoCreateObserver = {
           return;
         }
 
-        // if (el.created) return;
-        // window.counter2++;
-        // window.profiler[name] = window.profiler[name] != undefined ? window.profiler[name] + 1 : 0;
-        // window.targets[mutation.target.id || mutation.target.tagName] =
-        //   window.targets[mutation.target.id || mutation.target.tagName] != undefined ?
-        //   window.targets[mutation.target.id || mutation.target.tagName] + 1 :
-        //   0;
-
-        // window.attributeName[mutation.attributeName] =
-        //   window.attributeName[mutation.attributeName] != undefined ?
-        //   window.attributeName[mutation.attributeName] + 1 :
-        //   0;
-        callback.apply(null, [{ type: mutation.type, target: el }]);
+        callback.apply(null, [{ type: mutation.type, target: el, isRemoved: false }]);
       })
+
+      mutation.removedNodes.forEach((el) => {
+        if (!el.tagName) return;
+
+        if (include && !(el.matches(include) || el.querySelector(include))) {
+          return;
+        }
+        if (exclude && (el.matches(exclude) || el.querySelector(exclude))) {
+          return;
+        }
+
+        callback.apply(null, [{ type: mutation.type, target: el, isRemoved: true }]);
+      })
+
+
+
     });
 
     // addedNodes.map(el => el.created = true);
