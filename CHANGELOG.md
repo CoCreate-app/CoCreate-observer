@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.0.5...v1.1.0) (2021-05-24)
+
+
+### Features
+
+* observe when element removed ([8d023df](https://github.com/CoCreate-app/CoCreate-observer/commit/8d023dfaa938b0e71675b4f77c5c92fa5bac016b))
+
 ## [1.0.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.0.4...v1.0.5) (2021-04-27)
 
 
