@@ -117,6 +117,19 @@ const CoCreateObserver = {
 
     this.initTasks.forEach(({ observe, include, exclude, attributes, name }, callback) => {
 
+      mutation.removedNodes.forEach((el) => {
+        if (!el.tagName) return;
+
+        if (include && !(el.matches(include) || el.querySelector(include))) {
+          return;
+        }
+        if (exclude && (el.matches(exclude) || el.querySelector(exclude))) {
+          return;
+        }
+
+        callback.apply(null, [{ type: mutation.type, target: el, isRemoved: true }]);
+      })
+
       mutation.addedNodes.forEach((el) => {
         if (!el.tagName) return;
 
@@ -130,18 +143,7 @@ const CoCreateObserver = {
         callback.apply(null, [{ type: mutation.type, target: el, isRemoved: false }]);
       })
 
-      mutation.removedNodes.forEach((el) => {
-        if (!el.tagName) return;
 
-        if (include && !(el.matches(include) || el.querySelector(include))) {
-          return;
-        }
-        if (exclude && (el.matches(exclude) || el.querySelector(exclude))) {
-          return;
-        }
-
-        callback.apply(null, [{ type: mutation.type, target: el, isRemoved: true }]);
-      })
 
 
 
