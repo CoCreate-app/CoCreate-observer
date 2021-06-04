@@ -101,7 +101,7 @@ const CoCreateObserver = {
     // console.log(this)
     window.counter++;
     for (let mutation of mutationsList) {
-      if (mutation.type == "childList" && mutation.addedNodes.length > 0) {
+      if (mutation.type == "childList" && mutation.addedNodes.length  || mutation.removedNodes.length) {
         //. run init functions
         this.__initCallback(mutation)
       }
