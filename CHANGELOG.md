@@ -1,3 +1,11 @@
+## [1.1.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.1.0...v1.1.1) (2021-06-06)
+
+
+### Bug Fixes
+
+* synatax error in package.json ([2150907](https://github.com/CoCreate-app/CoCreate-observer/commit/215090705ddc6714a67417661ffc002c287f0e4c))
+* Update docs and package.json descriptions ([0243e46](https://github.com/CoCreate-app/CoCreate-observer/commit/0243e46867ac7aefab24c87bdf69921331d0fff2))
+
 # [1.1.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.0.5...v1.1.0) (2021-05-24)
 
 
