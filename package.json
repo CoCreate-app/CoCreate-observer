@@ -1,7 +1,12 @@
 {
   "name": "@cocreate/observer",
+<<<<<<< HEAD
   "version": "1.0.5",
   "description": "Register a components init function & observe selector. The init function will be fired immedietly after detection of selector.",
+=======
+  "version": "1.1.0",
+  "description": "A simple observer component in vanilla javascript. Easily configured using HTML5 data-attributes and/or JavaScript API.",
+>>>>>>> 533aae86260e31d7d5d42b74a7dc1e90147bb5ba
   "keywords": [
     "observer",
     "cocreate",
