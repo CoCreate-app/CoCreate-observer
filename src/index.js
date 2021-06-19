@@ -3,9 +3,9 @@
 
 
     // todo: avoid loops mechanism 
-    
+
     // todo: have 2 type of init: if no attributesFilter defined save them to all and only run a function that doesn't change attribute filter. and et cetera
-    
+
     // example :
     /**
      *     CoCreate.observer.init({
@@ -19,8 +19,8 @@
         },
       })
      **/
-     window.counter = 0;
-     
+    window.counter = 0;
+
     // todo: check if order of calling callbacks is irrelevant 
 
     function observer(doc) {
@@ -49,60 +49,12 @@
       });
     }
 
-
-    observer.prototype.runCallbackGen = function runCallbackGen(type) {
-
-      return [function(mutation, att) {
-          let callbacks = this.callbackMap.get(att);
-          if (callbacks && callbacks[type])
-            for (let callback of callbacks[type])
-              callback(mutation)
-
-
-
-        },
-        function(mutation) {
-          for (let callback of this.callbackMap.get('ALL')[type])
-            callback(mutation)
-        }
-      ]
-
-    }
-
-    observer.prototype.runCallbackExGen = function runCallbackExGen(type, key) {
-
-      return function(mutation) {
-
-
-        for (let node of mutation[key])
-          for (let attribute of node.attributes || node.parentElement.attributes) {
-            let callbacks = this.callbackMap.get(attribute.name)
-
-            if (callbacks && callbacks[type])
-              for (let callback of callbacks[type])
-
-                callback({ type: mutation.type, target: node, [type]: true })
-          }
-
-
-        for (let callback of this.callbackMap.get('ALL')[type])
-          for (let node of mutation[key])
-            callback({ type: mutation.type, target: node, [type]: true })
-
-
-
-      }
-
-    }
-
-
-
-
-
-    observer.prototype.init = function init({ observe = ['addedNodes', 'attributes', 'characterData'], attributesFilter: attributes, callback }) {
+    const validObserve = ['addedNodes', 'removedNodes', 'attributes', 'characterData'];
+    observer.prototype.init = function init({ observe = ['addedNodes', 'attributes'], attributeFilter: attributes, callback }) {
+      if (!observe || !observe.every(i => validObserve.includes(i)))
+        throw "please enter a valid observe";
       this.observe = observe;
       this.callback = callback;
-
       if (attributes && attributes.length)
         for (let attr of attributes)
           this._register(attr.toLowerCase())
@@ -127,14 +79,31 @@
     }
 
 
-    observer.prototype.uninit = function uninit({ callback }) {
+    observer.prototype.uninit = function uninit(callback) {
+      for (let [att, cbList] of this.callbackMap.entries()) {
+        if (cbList.attributes)
+          cbList.attributes = cbList.attributes.filter(cb => cb !== callback)
+        if (cbList.characterData)
+          cbList.characterData = cbList.characterData.filter(cb => cb !== callback)
+        if (cbList.addedNodes)
+          cbList.addedNodes = cbList.addedNodes.filter(cb => cb !== callback)
+        if (cbList.removedNodes)
+          cbList.removedNodes = cbList.removedNodes.filter(cb => cb !== callback)
+        this.callbackMap.set(att, {
+          attributes: cbList.attributes,
+          characterData: cbList.characterData,
+          addedNodes: cbList.addedNodes,
+          removedNodes: cbList.removedNodes
+        })
+      }
+
       // search all callback and remove
     }
 
     observer.prototype._callback = function _callback(mutationsList) {
 
       for (let mutation of mutationsList) {
-      window.counter++;
+        window.counter++;
         switch (mutation.type) {
           case 'attributes':
             this._attributeCallback(mutation)
@@ -144,6 +113,8 @@
             break;
 
           case 'childList':
+            if (Array.from(mutation.addedNodes).some(node => node.tagName && node.querySelector('[data-fetch_collection]')))
+              console.log('aaa')
             this._childListCallback(mutation)
             break;
           default:
@@ -152,6 +123,31 @@
 
       }
     }
+
+
+
+    observer.prototype.runCallbackGen = function runCallbackGen(type) {
+
+      return [function(mutation, att) {
+          let callbacks = this.callbackMap.get(att);
+          if (callbacks && callbacks[type])
+            for (let callback of callbacks[type])
+              callback(mutation)
+
+
+
+        },
+        function(mutation) {
+          for (let callback of this.callbackMap.get('ALL')[type])
+            callback(mutation)
+        }
+      ]
+
+    }
+
+
+
+
     observer.prototype._attributeCallback = function _attributeCallback(mutation) {
 
 
@@ -166,21 +162,53 @@
     }
 
 
-
     observer.prototype._characterDataCallback = function _characterDataCallback(mutation) {
-      
+
       if (mutation.target.data === mutation.oldValue)
         return;
-      
-      
+
+
       this.runCallbackCharAll(mutation)
-      
+
       // a text node garaunteed to have a parentElement
       let parent = mutation.target.parentElement;
       for (let attribute of parent.attributes) {
         this.runCallbackChar(mutation, attribute.name)
       }
-      
+
+    }
+
+    observer.prototype.runCallbackExGen = function runCallbackExGen(type, key) {
+
+      return function runCallbackEx(mutation) {
+
+
+        for (let node of mutation[key]) {
+          for (let attribute of node.attributes || node.parentElement && node.parentElement.attributes || []) {
+            let callbacks = this.callbackMap.get(attribute.name)
+
+            if (callbacks && callbacks[type])
+              for (let callback of callbacks[type])
+                callback({ type: mutation.type, target: node, [type]: true })
+          }
+
+          if (node.children)
+            runCallbackEx.call(this, {
+              [key]: node.children
+            })
+        }
+
+
+        for (let callback of this.callbackMap.get('ALL')[type])
+          for (let node of mutation[key])
+            callback({ type: mutation.type, target: node, [type]: true })
+
+
+
+
+
+      }
+
     }
 
     observer.prototype._childListCallback = function _childListCallback(mutation) {
@@ -191,6 +219,6 @@
     }
 
 
- 
+
     export default new observer(document.body);
     

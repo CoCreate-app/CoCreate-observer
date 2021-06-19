@@ -40,8 +40,8 @@
       
       CoCreate.observer.init({
         name: 'Test addedNodes', 
-        observe: ['addedNodes'], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
-        attributeFilter:['aa'],
+        observe: ['addedNodes'],
+        attributeFilter:['bb'],
         callback: function(mutation) {
            console.log('addedNodes observed',mutation)
         },
@@ -50,7 +50,7 @@
       CoCreate.observer.init({
         name: 'Test removedNodes', 
         observe: ['removedNodes'], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
-        attributeFilter:['aa'],
+        attributeFilter:['bb'],
         callback: function(mutation) {
            console.log('removedNodes observed',mutation)
            
