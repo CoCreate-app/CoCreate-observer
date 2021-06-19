@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.1.1...v1.2.0) (2021-06-19)
+
+
+### Features
+
+* support for remNodes and addedNodes ([abddcaa](https://github.com/CoCreate-app/CoCreate-observer/commit/abddcaa7ef9cab03fe5bdd42da27f1e501fbdb03))
+
 ## [1.1.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.1.0...v1.1.1) (2021-06-06)
 
 
