@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Observer | CoCreateJS</title>
+    
+    <!-- CoCreate Favicon -->
+    <link rel="icon" href="https://cdn.cocreate.app/favicon.ico" type="image/ico" sizes="16x16">
+  </head>
+  <body>
+    
+
+
+    <div aa="22">
+      
+          <div id="target">testing observer</div>
+    
+    </div>
+    <div bb="33">testing observer</div>
+    
+    
+    <!-- CoCreate JS CDN -->
+    <script src="./test.4.js" ></script>
+    <script>
+      CoCreate.observer.init({
+        name: 'Test Attribute', 
+        observe: ['attributes'], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
+        attributeFilter:['aa'],
+        callback: function(mutation) {
+           console.log('attribute observed',mutation)
+        },
+      })
+      
+      CoCreate.observer.init({
+        name: 'Test removedNodes', 
+        observe: ['childList'], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
+        callback: function(mutation) {
+           console.log('removedNodes observed',mutation)
+           console.log('addedNodes',mutaion.addedNodes)
+           console.log('removededNodes',mutaion.removedNodes)
+        },
+      })
+
+      CoCreate.observer.init({
+        name: 'Test characterData', 
+        observe: ['characterData'], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
+        callback: function(mutation) {
+           console.log('characterData observed',mutation)
+        },
+      })
+      
+    </script>
+  </body>
+</html>

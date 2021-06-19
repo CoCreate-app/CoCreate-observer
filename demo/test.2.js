@@ -19,7 +19,7 @@
         },
       })
      **/
-     window.counter = 0;
+     
      
     // todo: check if order of calling callbacks is irrelevant 
 
@@ -99,7 +99,7 @@
 
 
 
-    observer.prototype.init = function init({ observe = ['addedNodes', 'attributes', 'characterData'], attributesFilter: attributes, callback }) {
+    observer.prototype.init = function init({ observe = ['addedNodes', 'attributes', 'characterData'], attributeFilter: attributes, callback }) {
       this.observe = observe;
       this.callback = callback;
 
@@ -134,7 +134,7 @@
     observer.prototype._callback = function _callback(mutationsList) {
 
       for (let mutation of mutationsList) {
-      window.counter++;
+
         switch (mutation.type) {
           case 'attributes':
             this._attributeCallback(mutation)
@@ -191,7 +191,14 @@
     }
 
 
-
- 
-    export default new observer(document.body);
+    let o = new observer(document.body);
+    window.CoCreate = { observer: o }
+    // o.init({
+    //   observe: ['attributes', 'addedNodes', 'removedNodes', 'characterData'],
+    //   // attributes: ['bb'],
+    //   callback: (mutation) => {
+    //     console.log(mutation)
+    //   }
+    // })
+    // export default observer
     
