@@ -191,7 +191,6 @@
     }
 
 
-
  
     export default new observer(document.body);
     
