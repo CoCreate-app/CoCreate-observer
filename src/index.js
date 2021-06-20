@@ -184,13 +184,14 @@
 
 
         for (let node of mutation[key]) {
-          for (let attribute of node.attributes || node.parentElement && node.parentElement.attributes || []) {
-            let callbacks = this.callbackMap.get(attribute.name)
+          if (node.tagName)
+            for (let attribute of node.attributes || node.parentElement && node.parentElement.attributes || []) {
+              let callbacks = this.callbackMap.get(attribute.name)
 
-            if (callbacks && callbacks[type])
-              for (let callback of callbacks[type])
-                callback({ type: mutation.type, target: node, [type]: true })
-          }
+              if (callbacks && callbacks[type])
+                for (let callback of callbacks[type])
+                  callback({ type: mutation.type, target: node, [type]: true })
+            }
 
           if (node.children)
             runCallbackEx.call(this, {
@@ -201,6 +202,7 @@
 
         for (let callback of this.callbackMap.get('ALL')[type])
           for (let node of mutation[key])
+           if (node.tagName)
             callback({ type: mutation.type, target: node, [type]: true })
 
 
