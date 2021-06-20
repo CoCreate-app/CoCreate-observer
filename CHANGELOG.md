@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.0...v1.2.1) (2021-06-20)
+
+
+### Bug Fixes
+
+* new mutaionObserver init function ([3824a30](https://github.com/CoCreate-app/CoCreate-observer/commit/3824a304b4b02909df4c2538f75fd35d15d68766))
+
 # [1.2.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.1.1...v1.2.0) (2021-06-19)
 
 
