@@ -222,5 +222,24 @@
 
 
 
+observer.prototype.setInitialized = function(element, type) {
+    // element.setAttribute(`initialized_${type}`, "true");
+    type = type || "";
+    let key = "co_initialized_" + type;
+    element[key] = true;
+  },
+
+ observer.prototype.getInitialized = function(element, type) {
+    type = type || "";
+    let key = "co_initialized_" + type;
+    if (!element[key]) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
+
     export default new observer(document.body);
     
