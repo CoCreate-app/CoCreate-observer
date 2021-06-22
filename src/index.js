@@ -26,7 +26,7 @@
     function observer(doc) {
 
       this.callbackMap = new Map();
-      this.callbackMap.set('ALL', { attributes: [], addedNodes: [], removedNodes: [], characterData: [] })
+      this.callbackMap.set('ALL', { attributes: [], addedNodes: [], removedNodes: [], characterData: [], childList: [] })
 
       let [func1, func2] = this.runCallbackGen('attributes')
       this.runCallbackAtt = func1;
@@ -36,6 +36,7 @@
       this.runCallbackCharAll = func2;
       this.runCallbackAdd = this.runCallbackExGen('addedNodes', 'addedNodes')
       this.runCallbackRemove = this.runCallbackExGen('removedNodes', 'removedNodes')
+
 
       const observer = new MutationObserver((mutationsList) => this._callback.call(this, mutationsList));
 
@@ -49,7 +50,7 @@
       });
     }
 
-    const validObserve = ['addedNodes', 'removedNodes', 'attributes', 'characterData'];
+    const validObserve = ['addedNodes', 'removedNodes', 'attributes', 'characterData', 'childList'];
     observer.prototype.init = function init({ observe = ['addedNodes', 'attributes'], attributeFilter: attributes, callback }) {
       if (!observe || !observe.every(i => validObserve.includes(i)))
         throw "please enter a valid observe";
@@ -65,6 +66,11 @@
 
     observer.prototype._register = function _register(attr) {
       for (let observeType of this.observe) {
+        if (observeType === 'childList') {
+          if (this.callbackMap.get('ALL')['childList'])
+            this.callbackMap.get('ALL')['childList'].push(this.callback);
+          continue;
+        }
 
         if (this.callbackMap.has(attr))
           if (this.callbackMap.get(attr)[observeType])
@@ -89,11 +95,14 @@
           cbList.addedNodes = cbList.addedNodes.filter(cb => cb !== callback)
         if (cbList.removedNodes)
           cbList.removedNodes = cbList.removedNodes.filter(cb => cb !== callback)
+        if (cbList.childList)
+          cbList.childList = cbList.childList.filter(cb => cb !== callback)
         this.callbackMap.set(att, {
           attributes: cbList.attributes,
           characterData: cbList.characterData,
           addedNodes: cbList.addedNodes,
-          removedNodes: cbList.removedNodes
+          removedNodes: cbList.removedNodes,
+          childList: cbList.childList
         })
       }
 
@@ -113,8 +122,8 @@
             break;
 
           case 'childList':
-            if (Array.from(mutation.addedNodes).some(node => node.tagName && node.querySelector('[data-fetch_collection]')))
-              console.log('aaa')
+            // if (Array.from(mutation.addedNodes).some(node => node.tagName && node.querySelector('[data-fetch_collection]')))
+            //   console.log('aaa')
             this._childListCallback(mutation)
             break;
           default:
@@ -202,8 +211,8 @@
 
         for (let callback of this.callbackMap.get('ALL')[type])
           for (let node of mutation[key])
-           if (node.tagName)
-            callback({ type: mutation.type, target: node, [type]: true })
+            if (node.tagName)
+              callback({ type: mutation.type, target: node, [type]: true })
 
 
 
@@ -213,8 +222,16 @@
 
     }
 
+    observer.prototype._childList = function _childList(mutation) {
+        let callbacks = this.callbackMap.get('ALL')['childList']
+        callbacks.forEach(callback => {
+            callback(mutation)
+        })
+    }
+    
     observer.prototype._childListCallback = function _childListCallback(mutation) {
 
+      this._childList(mutation)
       this.runCallbackAdd(mutation)
       this.runCallbackRemove(mutation)
 
@@ -222,23 +239,23 @@
 
 
 
-observer.prototype.setInitialized = function(element, type) {
-    // element.setAttribute(`initialized_${type}`, "true");
-    type = type || "";
-    let key = "co_initialized_" + type;
-    element[key] = true;
-  },
+    observer.prototype.setInitialized = function(element, type) {
+        // element.setAttribute(`initialized_${type}`, "true");
+        type = type || "";
+        let key = "co_initialized_" + type;
+        element[key] = true;
+      },
 
- observer.prototype.getInitialized = function(element, type) {
-    type = type || "";
-    let key = "co_initialized_" + type;
-    if (!element[key]) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  }
+      observer.prototype.getInitialized = function(element, type) {
+        type = type || "";
+        let key = "co_initialized_" + type;
+        if (!element[key]) {
+          return false;
+        }
+        else {
+          return true;
+        }
+      }
 
 
     export default new observer(document.body);
