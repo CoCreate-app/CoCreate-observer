@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.1...v1.2.2) (2021-06-23)
+
+
+### Bug Fixes
+
+* update to new crud.save and crud.read ([d641653](https://github.com/CoCreate-app/CoCreate-observer/commit/d641653541dbe7529ac294b25fb6522303d83aa1))
+
 ## [1.2.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.0...v1.2.1) (2021-06-20)
 
 
