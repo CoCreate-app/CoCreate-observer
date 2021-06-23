@@ -194,7 +194,7 @@
 
         for (let node of mutation[key]) {
           if (node.tagName)
-            for (let attribute of node.attributes || node.parentElement && node.parentElement.attributes || []) {
+            for (let attribute of node.attributes) {
               let callbacks = this.callbackMap.get(attribute.name)
 
               if (callbacks && callbacks[type])
