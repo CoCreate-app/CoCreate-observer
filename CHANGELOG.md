@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.3...v1.2.4) (2021-06-24)
+
+
+### Bug Fixes
+
+* package versioningto 1.0.0 ([3649405](https://github.com/CoCreate-app/CoCreate-observer/commit/36494054a193451e218d2760ea471ecb10c95ff9))
+
 ## [1.2.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.2...v1.2.3) (2021-06-24)
 
 
