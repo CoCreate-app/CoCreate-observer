@@ -1,3 +1,11 @@
+## [1.2.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.2...v1.2.3) (2021-06-24)
+
+
+### Bug Fixes
+
+* add method to turn on and off console.log while in development ([0b4632e](https://github.com/CoCreate-app/CoCreate-observer/commit/0b4632e734e114b116c9ab3fc3492f3789d83a1e))
+* update all [@cocreate](https://github.com/cocreate) to use latest versions ([f502a11](https://github.com/CoCreate-app/CoCreate-observer/commit/f502a11b1c58bb5e20fc9ccf7a3fddf7f39e1a87))
+
 ## [1.2.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.1...v1.2.2) (2021-06-23)
 
 
