@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.5...v1.2.6) (2021-06-29)
+
+
+### Bug Fixes
+
+* add logger utility ([a52941b](https://github.com/CoCreate-app/CoCreate-observer/commit/a52941be6737f9ac7274d71f9b92a45c84734ab3))
+
 ## [1.2.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.4...v1.2.5) (2021-06-25)
 
 
