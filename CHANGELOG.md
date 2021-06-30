@@ -1,3 +1,10 @@
+## [1.2.7](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.6...v1.2.7) (2021-06-30)
+
+
+### Bug Fixes
+
+* automated and manual workflows ([60ed086](https://github.com/CoCreate-app/CoCreate-observer/commit/60ed086fd16865ec66dab50a948ce3ad0528ea74))
+
 ## [1.2.6](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.5...v1.2.6) (2021-06-29)
 
 
