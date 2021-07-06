@@ -86,7 +86,7 @@ observer.prototype._register = function _register(attr) {
 
 
 observer.prototype.uninit = function uninit(callback) {
-
+    // unattach callback parent if callback.length == 0
     for (let [att, cbList] of this.callbackMap.entries()) {
         if (cbList.attributes)
             cbList.attributes = cbList.attributes.filter(cb => cb !== callback)
@@ -240,21 +240,21 @@ observer.prototype._childListCallback = function _childListCallback(mutation) {
 
 
 observer.prototype.setInitialized = function(element, type) {
-        // element.setAttribute(`initialized_${type}`, "true");
-        type = type || "";
-        let key = "co_initialized_" + type;
-        element[key] = true;
-    },
+    // element.setAttribute(`initialized_${type}`, "true");
+    type = type || "";
+    let key = "co_initialized_" + type;
+    element[key] = true;
+}
 
-    observer.prototype.getInitialized = function(element, type) {
-        type = type || "";
-        let key = "co_initialized_" + type;
-        if (!element[key]) {
-            return false;
-        } else {
-            return true;
-        }
+observer.prototype.getInitialized = function(element, type) {
+    type = type || "";
+    let key = "co_initialized_" + type;
+    if (!element[key]) {
+        return false;
+    } else {
+        return true;
     }
+}
 
 
 export default new observer(document.body);
