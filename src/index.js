@@ -1,6 +1,3 @@
-import { logger } from '@cocreate/utils'
-let console = logger('off');
-
 // todo: run for all mutaitonList addedNodes and removed nodes match with this.mapCallback
 // we should keep a binary list of attributes to do fast search and avoid a lot of querySelectorAll
 
