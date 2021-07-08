@@ -1,3 +1,10 @@
+## [1.2.9](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.8...v1.2.9) (2021-07-08)
+
+
+### Bug Fixes
+
+* revert master back to old observer ([2e61aea](https://github.com/CoCreate-app/CoCreate-observer/commit/2e61aea51285862c7c44a0590157f789a8b546df))
+
 ## [1.2.8](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.7...v1.2.8) (2021-06-30)
 
 
