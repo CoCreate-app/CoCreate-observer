@@ -2,3 +2,5 @@
 node_modules
 dist
 .npmrc
+.vscode
+test[0-9].*
