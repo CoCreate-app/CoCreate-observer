@@ -1,264 +1,350 @@
-import { logger } from '@cocreate/utils'
-let console = logger('off');
+// todo: run for all mutaitonList addedNodes and removed nodes match with this.mapCallback
+// we should keep a binary list of attributes to do fast search and avoid a lot of querySelectorAll
+import parseSelector from "./parseSelector";
+const attitude = {
+  newObserver: false, // cause it to create a new mutationObserver when observer is "attribute" and it has attributeFilter
+  deepChildList: true, // cause it to go deep when mutation addedNodes and removedNodes receieved
+};
+// todo: avoid loops mechanism
 
-    // todo: run for all mutaitonList addedNodes and removed nodes match with this.mapCallback
-    // we should keep a binary list of attributes to do fast search and avoid a lot of querySelectorAll
+// todo: have 2 type of init: if no attributesFilter defined save them to all and only run a function that doesn't change attribute filter. and et cetera
 
+// example :
+/**
+ *     CoCreate.observer.init({
+          name: 'vdom', 
+          onlyCause: ['CCcss'], // name of ccCss observer.init
+          preventFrom: ['ccAttribute'], // name of ccAttribute observer.init
+          observe: ['removedNodes','addedNodes'], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
+          callback: function(mutation) {
+             // do vdom
+             
+    },
+  })
+ **/
 
-    // todo: avoid loops mechanism 
+let priority = {
+  tagName: 0,
+  id: 1,
+  attribute: 2,
+  attributeWithValue: 3,
+  class: 4,
+};
 
-    // todo: have 2 type of init: if no attributesFilter defined save them to all and only run a function that doesn't change attribute filter. and et cetera
+function sortSelectors(selList) {
+  return selList.sort((item1, item2) =>
+    priority[item1.type] > priority[item2.type] ? 1 : -1
+  );
+}
 
-    // example :
-    /**
-     *     CoCreate.observer.init({
-              name: 'vdom', 
-              onlyCause: ['CCcss'], // name of ccCss observer.init
-              preventFrom: ['ccAttribute'], // name of ccAttribute observer.init
-              observe: ['removedNodes','addedNodes'], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
-              callback: function(mutation) {
-                 // do vdom
-                 
-        },
-      })
-     **/
-    window.counter = 0;
+window.counter = 0;
 
-    // todo: check if order of calling callbacks is irrelevant 
+// todo: check if order of calling callbacks is irrelevant
 
-    function observer(doc) {
+function observer(doc) {
+  this.attributeCallback = {};
+  this.attributeCallback["ALL"] = [];
 
-      this.callbackMap = new Map();
-      this.callbackMap.set('ALL', { attributes: [], addedNodes: [], removedNodes: [], characterData: [], childList: [] })
+  this.childListCallback = [];
 
-      let [func1, func2] = this.runCallbackGen('attributes')
-      this.runCallbackAtt = func1;
-      this.runCallbackAttAll = func2;
-      ([func1, func2] = this.runCallbackGen('characterData'));
-      this.runCallbackChar = func1;
-      this.runCallbackCharAll = func2;
-      this.runCallbackAdd = this.runCallbackExGen('addedNodes', 'addedNodes')
-      this.runCallbackRemove = this.runCallbackExGen('removedNodes', 'removedNodes')
+  this.characterDataCallback = [];
 
+  const observer = new MutationObserver((mutationsList) =>
+    this._callback.call(this, mutationsList)
+  );
 
-      const observer = new MutationObserver((mutationsList) => this._callback.call(this, mutationsList));
+  observer.observe(doc, {
+    subtree: true, // observers all children and children of children
+    childList: true, // observes when elements are added and removed
+    attributes: true, // observers all children and children of children
+    attributeOldValue: true,
+    characterData: true, // observes inntext change
+    characterDataOldValue: true,
+  });
+}
 
-      observer.observe(doc, {
-        subtree: true, // observers all children and children of children
-        childList: true, // observes when elements are added and removed
-        attributes: true, // observers all children and children of children
-        attributeOldValue: true,
-        characterData: true, // observes inntext change
-        characterDataOldValue: true
+const validObserve = [
+  "addedNodes",
+  "removedNodes",
+  "attributes",
+  "characterData",
+  "childList",
+];
+observer.prototype.init = function init(args) {
+  if (!args.observe || !args.observe.every((i) => validObserve.includes(i)))
+    throw "please enter a valid observe";
+
+  self = this;
+  let param = {
+    ...args,
+    ...{ selector: args.target && sortSelectors(parseSelector(args.target)) },
+  };
+  args.observe.forEach((type) => {
+    self["_register_" + type].call(self, param);
+  });
+};
+// { observe = ['addedNodes', 'attributes'], attributeFilter, target, callback }
+observer.prototype._register_addedNodes = function _register_addedNodes(param) {
+  let meta = {
+    callback: param.callback,
+    selector: param.selector,
+    type: "addedNodes",
+  };
+  this.childListCallback.push(meta);
+};
+observer.prototype._register_removedNodes = function _register_removedNodes(
+  param
+) {
+  let meta = {
+    callback: param.callback,
+    selector: param.selector,
+    type: "removedNodes",
+  };
+  this.childListCallback.push(meta);
+};
+observer.prototype._register_childList = function _register_childList(param) {
+  let meta = {
+    callback: param.callback,
+    selector: param.selector,
+    type: "childList",
+  };
+  this.childListCallback.push(meta);
+};
+observer.prototype._register_characterData = function _register_characterData(
+  param
+) {
+  let meta = { callback: param.callback, selector: this.selector };
+  this.characterDataCallback.push(meta);
+};
+
+observer.prototype._register_attributes = function _register_attributes(param) {
+  self = this;
+  if (attitude.newObserver && param.attributeFilter) {
+    const observer = new MutationObserver((mutationsList) => {
+      mutationsList.forEach((mutation) => {
+        self._validateBySelector(mutation.target, param.selector) &&
+          param.callback(mutationsList);
       });
+    });
+
+    observer.observe(doc, {
+      subtree: true, // observers all children and children of children
+      childList: false, // observes when elements are added and removed
+      attributes: true, // observers all children and children of children
+      attributeOldValue: true,
+      characterData: false, // observes inntext change
+      characterDataOldValue: false,
+      attributeFilter: param.attributeFilter,
+    });
+  }
+
+  let meta = { callback: param.callback, selector: this.selector };
+  if (param.attributeFilter)
+    param.attributeFilter.forEach((filter) => {
+      if (this.attributeCallback[filter])
+        this.attributeCallback[filter].push(meta);
+      else this.attributeCallback[filter] = [meta];
+    });
+  else this.attributeCallback["ALL"].push(meta);
+};
+
+observer.prototype.uninit = function uninit(callback) {
+  // unattach callback parent if callback.length == 0
+};
+
+observer.prototype._callback = function _callback(mutationsList) {
+  for (let mutation of mutationsList) {
+    window.counter++;
+    switch (mutation.type) {
+      case "attributes":
+        this._attributeCallback(mutation);
+        break;
+      case "characterData":
+        this._characterDataCallback(mutation);
+        break;
+
+      case "childList":
+        this._childList(mutation);
+        break;
+      default:
     }
+  }
+};
 
-    const validObserve = ['addedNodes', 'removedNodes', 'attributes', 'characterData', 'childList'];
-    observer.prototype.init = function init({ observe = ['addedNodes', 'attributes'], attributeFilter: attributes, callback }) {
-      if (!observe || !observe.every(i => validObserve.includes(i)))
-        throw "please enter a valid observe";
-      this.observe = observe;
-      this.callback = callback;
-      if (attributes && attributes.length)
-        for (let attr of attributes)
-          this._register(attr.toLowerCase())
-      else
-        this._register('ALL')
-
+observer.prototype._validateBySelector = function _validateBySelector(
+  element,
+  selectors
+) {
+  return selectors.every((selector) => {
+    switch (selector.type) {
+      case "tagName":
+        return element.tagName === selector.name;
+      case "id":
+        return element.id === selector.name;
+      case "class":
+        return element.classList.contains(selector.name);
+      case "attribute":
+        return element.hasAttributes(selector.name);
+      case "attributeWithValue":
+        return (
+          element.hasAttributes(selector.name) &&
+          element.getAttribute(selector.name) === selector.value
+        );
+      default:
+        throw new Error("unidentified selector type");
     }
+  });
+};
 
-    observer.prototype._register = function _register(attr) {
-      for (let observeType of this.observe) {
-        if (observeType === 'childList') {
-          if (this.callbackMap.get('ALL')['childList'])
-            this.callbackMap.get('ALL')['childList'].push(this.callback);
-          continue;
-        }
+observer.prototype._attributeCallback = function _attributeCallback(mutation) {
+  if (!mutation.target.hasAttributes(mutation.attributeName)) return;
 
-        if (this.callbackMap.has(attr))
-          if (this.callbackMap.get(attr)[observeType])
-            this.callbackMap.get(attr)[observeType].push(this.callback);
-          else
-            this.callbackMap.get(attr)[observeType] = [this.callback];
-        else
-          this.callbackMap.set(attr, {
-            [observeType]: [this.callback]
-          })
+  let newValue = mutation.target.getAttribute(mutation.attributeName);
+
+  if (newValue === mutation.oldValue) return;
+
+  this.attributeCallback.ALL.forEach((row) => {
+    if (row.selector && this._validateBySelector(mutation.target, row.selector))
+      row.callback(mutation);
+    else if (!row.selector) row.callback(mutation);
+  });
+
+  function filter()
+  if (!meta) return;
+
+  meta.forEach((row) => {
+    if (row.selector && this._validateBySelector(mutation.target, row.selector))
+      row.callback(mutation);
+    else if (!row.selector) row.callback(mutation);
+  });
+};
+
+observer.prototype._characterDataCallback = function _characterDataCallback(
+  mutation
+) {
+  if (mutation.target.data === mutation.oldValue) return;
+
+  this.characterDataCallback.forEach((row) => {
+    if (
+      row.selector &&
+      this._validateBySelector(mutation.target.parentElement, row.selector)
+    )
+      row.callback(mutation);
+    else if (!row.selector) row.callback(mutation);
+  });
+};
+
+// addedNodes and removedNodes only consist of immediate elements that is added
+if (attitude.deepChildList)
+  observer.prototype.everyElement = function everyElement(el, callback) {
+    callback(el);
+
+    if (el.childNodes)
+      for (let node of el.children) this.everyElement(node, callback);
+  };
+else
+  observer.prototype.everyElement = function everyElement(el, callback) {
+    callback(el);
+  };
+
+// childlist consist of text nodes and no filteration applied on nodes that are type of text
+observer.prototype._childList = function _childList(mutation) {
+  let addedNodes = Array.from(mutation.addedNodes);
+  let removedNodes = Array.from(mutation.removedNodes);
+  this.childListCallback.forEach((row) => {
+    let addedNodesList = [];
+    let removedNodesList = [];
+    if (row.type == "childList") {
+      if (row.selector) {
+        addedNodes.filter((el) => {
+          el.tagName &&
+            this.everyElement(el, (el) => {
+              if (el.tagName && this._validateBySelector(el, row.selector))
+                addedNodesList.push(el);
+            });
+        });
+
+        removedNodes.filter((el) => {
+          el.tagName &&
+            this.everyElement(el, (el) => {
+              if (el.tagName && this._validateBySelector(el, row.selector))
+                removedNodesList.push(el);
+            });
+        });
+      } else if (!row.selector) {
+        addedNodes.forEach((el) => {
+          el.tagName &&
+            this.everyElement(el, (el) => {
+              addedNodesList.push(el);
+            });
+        });
+        removedNodes.forEach((el) => {
+          el.tagName &&
+            this.everyElement(el, (el) => {
+              removedNodesList.push(el);
+            });
+        });
       }
-    }
 
-
-    observer.prototype.uninit = function uninit(callback) {
-      for (let [att, cbList] of this.callbackMap.entries()) {
-        if (cbList.attributes)
-          cbList.attributes = cbList.attributes.filter(cb => cb !== callback)
-        if (cbList.characterData)
-          cbList.characterData = cbList.characterData.filter(cb => cb !== callback)
-        if (cbList.addedNodes)
-          cbList.addedNodes = cbList.addedNodes.filter(cb => cb !== callback)
-        if (cbList.removedNodes)
-          cbList.removedNodes = cbList.removedNodes.filter(cb => cb !== callback)
-        if (cbList.childList)
-          cbList.childList = cbList.childList.filter(cb => cb !== callback)
-        this.callbackMap.set(att, {
-          attributes: cbList.attributes,
-          characterData: cbList.characterData,
-          addedNodes: cbList.addedNodes,
-          removedNodes: cbList.removedNodes,
-          childList: cbList.childList
-        })
-      }
-
-      // search all callback and remove
-    }
-
-    observer.prototype._callback = function _callback(mutationsList) {
-
-      for (let mutation of mutationsList) {
-        window.counter++;
-        switch (mutation.type) {
-          case 'attributes':
-            this._attributeCallback(mutation)
-            break;
-          case 'characterData':
-            this._characterDataCallback(mutation)
-            break;
-
-          case 'childList':
-            // if (Array.from(mutation.addedNodes).some(node => node.tagName && node.querySelector('[data-fetch_collection]')))
-            //   console.log('aaa')
-            this._childListCallback(mutation)
-            break;
-          default:
-        }
-
-      }
-    }
-
-
-
-    observer.prototype.runCallbackGen = function runCallbackGen(type) {
-
-      return [function(mutation, att) {
-          let callbacks = this.callbackMap.get(att);
-          if (callbacks && callbacks[type])
-            for (let callback of callbacks[type])
-              callback(mutation)
-
-
-
-        },
-        function(mutation) {
-          for (let callback of this.callbackMap.get('ALL')[type])
-            callback(mutation)
-        }
-      ]
-
-    }
-
-
-
-
-    observer.prototype._attributeCallback = function _attributeCallback(mutation) {
-
-
-      if (!mutation.target.hasAttributes(mutation.attributeName)) return;
-      let newValue = mutation.target.getAttribute(mutation.attributeName)
-
-      if (newValue === mutation.oldValue)
-        return;
-
-      this.runCallbackAtt(mutation, mutation.attributeName)
-      this.runCallbackAttAll(mutation)
-    }
-
-
-    observer.prototype._characterDataCallback = function _characterDataCallback(mutation) {
-
-      if (mutation.target.data === mutation.oldValue)
-        return;
-
-
-      this.runCallbackCharAll(mutation)
-
-      // a text node garaunteed to have a parentElement
-      let parent = mutation.target.parentElement;
-      for (let attribute of parent.attributes) {
-        this.runCallbackChar(mutation, attribute.name)
-      }
-
-    }
-
-    observer.prototype.runCallbackExGen = function runCallbackExGen(type, key) {
-
-      return function runCallbackEx(mutation) {
-
-
-        for (let node of mutation[key]) {
-          if (node.tagName)
-            for (let attribute of node.attributes) {
-              let callbacks = this.callbackMap.get(attribute.name)
-
-              if (callbacks && callbacks[type])
-                for (let callback of callbacks[type])
-                  callback({ type: mutation.type, target: node, [type]: true })
-            }
-
-          if (node.children)
-            runCallbackEx.call(this, {
-              [key]: node.children
+      if (addedNodesList.length || removedNodesList.length)
+        row.callback({
+          ...mutation,
+          addedNodes: addedNodesList,
+          removedNodes: removedNodesList,
+        });
+    } else if (row.type == "addedNodes") {
+      if (row.selector)
+        addedNodes.forEach((el) => {
+          el.tagName &&
+            this.everyElement(el, (el) => {
+              if (el.tagName && this._validateBySelector(el, row.selector))
+                row.callback({ target: el, type: "addedNodes" });
+            });
+        });
+      else if (!row.selector)
+        addedNodes.forEach(
+          (el) =>
+            el.tagName &&
+            this.everyElement(el, (el) => {
+              row.callback({ target: el, type: "addedNodes" });
             })
-        }
-
-
-        for (let callback of this.callbackMap.get('ALL')[type])
-          for (let node of mutation[key])
-            if (node.tagName)
-              callback({ type: mutation.type, target: node, [type]: true })
-
-
-
-
-
-      }
-
+        );
+    } else if (row.type == "removedNodes") {
+      if (row.selector)
+        removedNodes.forEach((el) => {
+          el.tagName &&
+            this.everyElement(el, (el) => {
+              if (el.tagName && this._validateBySelector(el, row.selector))
+                row.callback({ target: el, type: "removedNodes" });
+            });
+        });
+      else if (!row.selector)
+        removedNodes.forEach(
+          (el) =>
+            el.tagName &&
+            this.everyElement(el, (el) => {
+              row.callback({ target: el, type: "removedNodes" });
+            })
+        );
     }
+  });
+};
 
-    observer.prototype._childList = function _childList(mutation) {
-        let callbacks = this.callbackMap.get('ALL')['childList']
-        callbacks.forEach(callback => {
-            callback(mutation)
-        })
-    }
-    
-    observer.prototype._childListCallback = function _childListCallback(mutation) {
+observer.prototype.setInitialized = function (element, type) {
+  // element.setAttribute(`initialized_${type}`, "true");
+  type = type || "";
+  let key = "co_initialized_" + type;
+  element[key] = true;
+};
 
-      this._childList(mutation)
-      this.runCallbackAdd(mutation)
-      this.runCallbackRemove(mutation)
+observer.prototype.getInitialized = function (element, type) {
+  type = type || "";
+  let key = "co_initialized_" + type;
+  if (!element[key]) {
+    return false;
+  } else {
+    return true;
+  }
+};
 
-    }
-
-
-
-    observer.prototype.setInitialized = function(element, type) {
-        // element.setAttribute(`initialized_${type}`, "true");
-        type = type || "";
-        let key = "co_initialized_" + type;
-        element[key] = true;
-      },
-
-      observer.prototype.getInitialized = function(element, type) {
-        type = type || "";
-        let key = "co_initialized_" + type;
-        if (!element[key]) {
-          return false;
-        }
-        else {
-          return true;
-        }
-      }
-
-
-    export default new observer(document.body);
-    
+export default new observer(document.body);
