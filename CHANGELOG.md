@@ -1,3 +1,10 @@
+## [1.2.10](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.9...v1.2.10) (2021-07-10)
+
+
+### Bug Fixes
+
+* gitignore all logs ([ef3c53b](https://github.com/CoCreate-app/CoCreate-observer/commit/ef3c53b76dd4ae7066a52b60dd47d0086e08957a))
+
 ## [1.2.9](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.8...v1.2.9) (2021-07-08)
 
 
