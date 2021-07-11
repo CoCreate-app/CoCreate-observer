@@ -4,8 +4,7 @@ let selectorReg = {
   tagName: `(?<name>${strReg})`,
   id: `\\#(?<name>${strReg})`,
   class: `\\.(?<name>${strReg})`,
-  attribute: `\\[(?<name>${strReg})\\]`,
-  attributeWithValue: `\\[(?<name>${strReg})=${quote}(?<value>.*?)${quote}\\]`,
+  attribute: `\\[(?<name>${strReg})(=${quote}(?<value>.*?)${quote})?\\]`,
 };
 
 function filter(type, obj) {
@@ -17,8 +16,10 @@ function filter(type, obj) {
 }
 
 function parseSelector(str) {
-  let list = [];
-  while (str.length)
+  let list = [],
+    lastLen = 0;
+  while (str.length !== lastLen) {
+    lastLen = str.length;
     for (let [regName, regValue] of Object.entries(selectorReg)) {
       let match = str.match(regValue);
       if (match && match.index === 0) {
@@ -26,7 +27,7 @@ function parseSelector(str) {
         str = str.substr(match[0].length);
       }
     }
-  return list;
+  }
+  return str.length ? false : list;
 }
-
 export default parseSelector;
