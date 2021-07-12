@@ -1,7 +1,7 @@
 // todo: run for all mutaitonList addedNodes and removed nodes match with this.mapCallback
 // we should keep a binary list of attributes to do fast search and avoid a lot of querySelectorAll
 import parseSelector from "./parseSelector";
-
+require("./bench");
 let selChunkNameList = ["id", "class", "attribute", "tagName"];
 
 let callbackList = {};
@@ -201,19 +201,22 @@ observer.prototype.uninit = function uninit(callback) {
 
 observer.prototype._callback = function _callback(mutationsList) {
   for (let mutation of mutationsList) {
-    switch (mutation.type) {
-      case "childList":
-        this.handleChildList(mutation);
-        this.handleAddedNodes(mutation);
-        this.handleRemovedNodes(mutation);
-        break;
-      case "attributes":
-        this.handleAttributes(mutation);
-        break;
-      case "characterData":
-        this.handleCharacterData(mutation);
-        break;
-    }
+    window.bench.measure(() => {
+      switch (mutation.type) {
+        case "childList":
+          this.handleChildList(mutation);
+          this.handleAddedNodes(mutation);
+          this.handleRemovedNodes(mutation);
+          break;
+        case "attributes":
+          this.handleAttributes(mutation);
+          break;
+        case "characterData":
+          this.handleCharacterData(mutation);
+          break;
+      }
+      return mutation;
+    });
   }
 };
 
@@ -284,7 +287,11 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
     let { callbackType, elements } = prop;
     let func = callbackList[cbName].callback;
     if (callbackType === "callback") {
-      func({ target: mutation.target, type: "childList", addedNodes: elements });
+      func({
+        target: mutation.target,
+        type: "childList",
+        addedNodes: elements,
+      });
     } else if (callbackType === "query") {
       let selector = callbackList[cbName].selector;
 
@@ -292,7 +299,12 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
       for (let el of elements) {
         if (el.matches(selector)) matchedEl.push(el);
       }
-      if (matchedEl.length) func({ target: mutation.target, type: "childList", addedNodes: matchedEl });
+      if (matchedEl.length)
+        func({
+          target: mutation.target,
+          type: "childList",
+          addedNodes: matchedEl,
+        });
     }
   }
 };
