@@ -284,7 +284,7 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
     let { callbackType, elements } = prop;
     let func = callbackList[cbName].callback;
     if (callbackType === "callback") {
-      func({ type: "childList", addedNodes: elements });
+      func({ target: mutation.target, type: "childList", addedNodes: elements });
     } else if (callbackType === "query") {
       let selector = callbackList[cbName].selector;
 
@@ -292,7 +292,7 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
       for (let el of elements) {
         if (el.matches(selector)) matchedEl.push(el);
       }
-      if (matchedEl.length) func({ type: "childList", addedNodes: matchedEl });
+      if (matchedEl.length) func({ target: mutation.target, type: "childList", addedNodes: matchedEl });
     }
   }
 };
