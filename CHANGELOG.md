@@ -1,3 +1,11 @@
+## [1.2.11](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.10...v1.2.11) (2021-07-13)
+
+
+### Bug Fixes
+
+* add yarn lockfile to git ignore ([326ba42](https://github.com/CoCreate-app/CoCreate-observer/commit/326ba42ebc95081c76cc20f1ff28c92c953f0d9a))
+* remove yarn.lock ([6ceb892](https://github.com/CoCreate-app/CoCreate-observer/commit/6ceb89253d25d08cc05cbc7aaaf833dffdcd5886))
+
 ## [1.2.10](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.9...v1.2.10) (2021-07-10)
 
 
