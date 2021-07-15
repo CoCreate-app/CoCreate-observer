@@ -1,7 +1,10 @@
 // todo: run for all mutaitonList addedNodes and removed nodes match with this.mapCallback
 // we should keep a binary list of attributes to do fast search and avoid a lot of querySelectorAll
 import parseSelector from "./parseSelector";
-require("./bench");
+let benchmarker = require("./bench");
+
+
+
 let selChunkNameList = ["id", "class", "attribute", "tagName"];
 
 let callbackList = {};
@@ -11,6 +14,7 @@ let childListTarget = {
   id: {},
   attribute: {},
   class: {},
+  undefinedSelector: {}
 };
 
 let characterTarget = {
@@ -18,6 +22,7 @@ let characterTarget = {
   id: {},
   attribute: {},
   class: {},
+  undefinedSelector: {}
 };
 
 let attributesTarget = {
@@ -26,6 +31,7 @@ let attributesTarget = {
     id: {},
     attribute: {},
     class: {},
+    undefinedSelector: {}
   },
 };
 
@@ -34,14 +40,25 @@ let addedNodesTarget = {
   id: {},
   attribute: {},
   class: {},
+  undefinedSelector: {}
 };
+
 let removedNodesTarget = {
   tagName: {},
   id: {},
   attribute: {},
   class: {},
+  undefinedSelector: {}
 };
 
+let allCallbacks = {
+  childListTarget,
+  characterTarget,
+  attributesTarget,
+  addedNodesTarget,
+  removedNodesTarget
+}
+window.allCallbacks = allCallbacks;
 let idName = "cbId";
 let i = 0;
 
@@ -79,10 +96,13 @@ observer.prototype.init = function init({
   attributeName,
   target,
   callback,
+  name
 }) {
   if (!observe || !observe.every((i) => validObserve.includes(i)))
     throw "please enter a valid observe";
+  this.name = name;
   // only childList
+  // target += attributeName.map(i => `[${i}]`);
   for (let observeType of observe) {
     switch (observeType) {
       case "attributes":
@@ -94,20 +114,13 @@ observer.prototype.init = function init({
                 id: {},
                 attribute: {},
                 class: {},
+                undefinedSelector: {}
               };
-
-            // attributesTarget[att][callbackId] = {
-            //   attributeName: att,
-            //   callback,
-            // };
-
-            // createOrAttach(attributesTarget[att]["attribute"], att, {
-            //   [undefined]: { [callbackId]: "callback" },
-            // });
 
             this.registerObserve(attributesTarget[att], target, callback);
           }
-        } else
+        }
+        else
           this.registerObserve(
             attributesTarget["undefinedAttribute"],
             target,
@@ -125,9 +138,9 @@ observer.prototype.init = function init({
       case "removedNodes":
         this.registerObserve(removedNodesTarget, target, callback);
         break;
-      // case "characterData":
-      //   this.registerObserve(characterTarget, target, callback);
-      //   break;
+        // case "characterData":
+        //   this.registerObserve(characterTarget, target, callback);
+        //   break;
 
       default:
         break;
@@ -147,76 +160,98 @@ observer.prototype.registerObserve = function registerObserve(
       callbackList[callbackId] = {
         selector,
         callback,
+        name: this.name
       };
 
-      let parsed = parseSelector(selector);
 
-      for (let chunkName of selChunkNameList) {
-        let find = parsed.find((i) => i.type === chunkName);
-        if (find) {
-          if (find.type === "attribute") {
-            createOrAttach(containerTarget[find.type], find.name, {
-              [find.value]: {
-                ...(parsed.length <= 1
-                  ? { [callbackId]: "callback" }
-                  : { [callbackId]: "query" }),
-              },
-            });
-          } else {
-            createOrAttach(
-              containerTarget[find.type],
-              find.name,
-              parsed.length <= 1
-                ? { [callbackId]: "callback" }
-                : { [callbackId]: "query" }
-            );
-          }
-        } else {
-          createOrAttach(
-            containerTarget[chunkName],
-            "undefinedSelector",
-            parsed.length <= 1
-              ? { [callbackId]: "callback" }
-              : { [callbackId]: "query" }
-          );
-        }
-      }
+      register(containerTarget, selector, callbackId)
+
     }
-  } else {
+
+  }
+  else {
     let callbackId = idName + ++i;
     callbackList[callbackId] = {
       callback,
+    name: this.name
     };
-    for (let chunkName of selChunkNameList) {
-      createOrAttach(containerTarget[chunkName], "undefinedSelector", {
-        [callbackId]: "callback",
-      });
-    }
+
+
+    Object.assign(containerTarget.undefinedSelector, {
+      [callbackId]: "callback"
+    })
+
+
   }
-};
+}
+
+
+function register(containerTarget, selector, callbackId) {
+  let parsed = parseSelector(selector);
+  if (parsed) {
+     let value = parsed.length <= 1 ? {
+        [callbackId]: "callback"
+      } : {
+        [callbackId]: "query"
+      };
+    
+    for (let chunkName of parsed) {
+
+
+     chunkName.value = chunkName.value || '*';
+
+      createOrAttach(
+        containerTarget[chunkName.type],
+        chunkName.name,
+        chunkName.type === "attribute" ? {
+          [chunkName.value]: {
+            ...value
+          },
+        }: value
+      );
+
+    }
+
+
+
+  }
+
+
+
+}
+
+function objRemoveItem(obj, removeItem, parent, key) {
+  if (Array.isArray(obj)) parent[key] = obj.filter((i) => i != removeItem);
+  else if (typeof obj == "object")
+    for (let [key, value] of Object.entries(obj)) {
+      objRemoveItem(obj[key], removeItem, obj, key);
+    }
+}
 
 observer.prototype.uninit = function uninit(callback) {
   // unattach callback parent if callback.length == 0
+  objRemoveItem(allCallbacks, callback)
 };
 
 observer.prototype._callback = function _callback(mutationsList) {
   for (let mutation of mutationsList) {
-    window.bench.measure(() => {
-      switch (mutation.type) {
-        case "childList":
-          this.handleChildList(mutation);
-          this.handleAddedNodes(mutation);
-          this.handleRemovedNodes(mutation);
-          break;
-        case "attributes":
-          this.handleAttributes(mutation);
-          break;
-        case "characterData":
-          this.handleCharacterData(mutation);
-          break;
-      }
-      return mutation;
-    });
+    benchmarker.start('mutation', mutation)
+
+    switch (mutation.type) {
+      case "childList":
+        this.handleChildList(mutation);
+        this.handleAddedNodes(mutation);
+        this.handleRemovedNodes(mutation);
+        break;
+      case "attributes":
+        this.handleAttributes(mutation);
+        break;
+      case "characterData":
+        this.handleCharacterData(mutation);
+        break;
+    }
+    benchmarker.stop('mutation')
+
   }
 };
 
@@ -254,9 +289,15 @@ observer.prototype.handleAttributes = function handleAttributes(mutation) {
 observer.prototype.runCallbacks = function runCallbacks(callbacks, mutation) {
   for (let [name, callbackType] of Object.entries(callbacks)) {
     let { callback, selector } = callbackList[name];
-    if (callbackType === "callback") callback(mutation);
-    else if (callbackType === "query" && mutation.target.matches(selector)) {
+    if (callbackType === "callback") {
+      benchmarker.stop('mutation')
       callback(mutation);
+      benchmarker.start('mutation')
+    }
+    else if (callbackType === "query" && mutation.target.matches(selector)) {
+      benchmarker.stop('mutation')
+      callback(mutation);
+      benchmarker.start('mutation')
     }
   }
 };
@@ -287,24 +328,32 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
     let { callbackType, elements } = prop;
     let func = callbackList[cbName].callback;
     if (callbackType === "callback") {
+      benchmarker.stop('mutation')
       func({
         target: mutation.target,
         type: "childList",
         addedNodes: elements,
       });
-    } else if (callbackType === "query") {
+      benchmarker.start('mutation')
+    }
+    else if (callbackType === "query") {
       let selector = callbackList[cbName].selector;
 
       let matchedEl = [];
       for (let el of elements) {
         if (el.matches(selector)) matchedEl.push(el);
       }
-      if (matchedEl.length)
+      if (matchedEl.length) {
+        benchmarker.stop('mutation')
+
+
         func({
           target: mutation.target,
           type: "childList",
           addedNodes: matchedEl,
         });
+        benchmarker.start('mutation')
+      }
     }
   }
 };
@@ -329,50 +378,48 @@ function createOrPush(obj, name, value) {
 function runMutations(containerTarget, el) {
   let list = [{}];
 
-  let id = el.id || "undefinedSelector";
+
+  list.push(containerTarget.undefinedSelector);
+
+
+  let id = el.id;
   if (containerTarget.id[id]) list.push(containerTarget.id[id]);
-  else if (containerTarget.id["undefinedSelector"])
-    list.push(containerTarget.id["undefinedSelector"]);
+
 
   if (containerTarget.tagName[el.tagName])
     list.push(containerTarget.tagName[el.tagName]);
-  else if (containerTarget.tagName["undefinedSelector"])
-    list.push(containerTarget.tagName["undefinedSelector"]);
+
 
   for (let att of el.attributes) {
     let attrName = att.name,
       value = att.value;
-    if (containerTarget.attribute[attrName])
-      if (containerTarget.attribute[attrName][value])
-        list.push(containerTarget.attribute[attrName]);
-      else if (containerTarget.attribute[attrName][undefined])
-        list.push(containerTarget.attribute[attrName][undefined]);
-    if (containerTarget.attribute["undefinedSelector"])
-      list.push(containerTarget.attribute["undefinedSelector"]);
+    if (containerTarget.attribute[attrName] && containerTarget.attribute[attrName][value])
+        list.push(containerTarget.attribute[attrName][value]);
+    if(containerTarget.attribute[attrName] && containerTarget.attribute[attrName]['*'])
+        list.push(containerTarget.attribute[attrName]['*']);
   }
 
   for (let c of el.classList) {
     if (containerTarget.class[c]) list.push(containerTarget.class[c]);
-    else if (containerTarget.class["undefinedSelector"])
-      list.push(containerTarget.class["undefinedSelector"]);
   }
 
   return Object.assign.apply(Object, list);
 }
 
-observer.prototype.setInitialized = function (element, type) {
+observer.prototype.setInitialized = function(element, type) {
   // element.setAttribute(`initialized_${type}`, "true");
   type = type || "";
   let key = "co_initialized_" + type;
   element[key] = true;
 };
 
-observer.prototype.getInitialized = function (element, type) {
+observer.prototype.getInitialized = function(element, type) {
   type = type || "";
   let key = "co_initialized_" + type;
   if (!element[key]) {
     return false;
-  } else {
+  }
+  else {
     return true;
   }
 };
