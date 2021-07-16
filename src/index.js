@@ -173,7 +173,7 @@ observer.prototype.registerObserve = function registerObserve(
     let callbackId = idName + ++i;
     callbackList[callbackId] = {
       callback,
-    name: this.name
+      name: this.name
     };
 
 
@@ -189,16 +189,16 @@ observer.prototype.registerObserve = function registerObserve(
 function register(containerTarget, selector, callbackId) {
   let parsed = parseSelector(selector);
   if (parsed) {
-     let value = parsed.length <= 1 ? {
-        [callbackId]: "callback"
-      } : {
-        [callbackId]: "query"
-      };
-    
+    let value = parsed.length <= 1 ? {
+      [callbackId]: "callback"
+    } : {
+      [callbackId]: "query"
+    };
+
     for (let chunkName of parsed) {
 
 
-     chunkName.value = chunkName.value || '*';
+      chunkName.value = chunkName.value || '*';
 
       createOrAttach(
         containerTarget[chunkName.type],
@@ -207,7 +207,7 @@ function register(containerTarget, selector, callbackId) {
           [chunkName.value]: {
             ...value
           },
-        }: value
+        } : value
       );
 
     }
@@ -220,17 +220,31 @@ function register(containerTarget, selector, callbackId) {
 
 }
 
-function objRemoveItem(obj, removeItem, parent, key) {
-  if (Array.isArray(obj)) parent[key] = obj.filter((i) => i != removeItem);
-  else if (typeof obj == "object")
-    for (let [key, value] of Object.entries(obj)) {
-      objRemoveItem(obj[key], removeItem, obj, key);
-    }
+function removeCallback(obj, id, parent, key) {
+  if (obj[id]) {
+    delete obj[id];
+    if (parent && Object.keys(obj).length === 0) delete parent[key];
+  }
+  for (let [key, value] of Object.entries(obj))
+    if (value.constructor.name == "Object") removeCallback(value, id, obj, key);
 }
 
 observer.prototype.uninit = function uninit(callback) {
+
+  let callbackId;
+  for (let [key, value] of Object.entries(callbackList)) {
+    if (value.callback === callback) {
+      callbackId = key;
+
+      break;
+    }
+  }
+  if (callbackId) {
+    removeCallback(allCallbacks, callbackId)
+    delete callbackList[callbackId];
+
+  }
   // unattach callback parent if callback.length == 0
-  objRemoveItem(allCallbacks, callback)
 };
 
 observer.prototype._callback = function _callback(mutationsList) {
@@ -275,15 +289,21 @@ observer.prototype.handleRemovedNodes = function handleRemovedNodes(mutation) {
   }
 };
 observer.prototype.handleAttributes = function handleAttributes(mutation) {
-  let container1, container2, callbacks, callbacks2;
-  container1 = attributesTarget[mutation.attributeName];
-  container2 = attributesTarget["undefinedAttribute"];
-  if (container1) callbacks = runMutations(container1, mutation.target);
-  callbacks2 = runMutations(container2, mutation.target);
-  if (callbacks) callbacks = Object.assign(callbacks, callbacks2);
-  else callbacks = callbacks2;
 
-  this.runCallbacks(callbacks, mutation);
+  let container = attributesTarget[mutation.attributeName];
+  if (container) {
+    let callbacks = runMutations(container, mutation.target);
+    this.runCallbacks(callbacks, mutation);
+  }
+
+
+  container = attributesTarget["undefinedAttribute"];
+  if (container) {
+    let callbacks = runMutations(container, mutation.target);
+    this.runCallbacks(callbacks, mutation);
+  }
+
+
 };
 
 observer.prototype.runCallbacks = function runCallbacks(callbacks, mutation) {
@@ -326,6 +346,7 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
 
   for (let [cbName, prop] of Object.entries(addCallbacks)) {
     let { callbackType, elements } = prop;
+    if (!callbackList[cbName]) continue;
     let func = callbackList[cbName].callback;
     if (callbackType === "callback") {
       benchmarker.stop('mutation')
@@ -394,9 +415,9 @@ function runMutations(containerTarget, el) {
     let attrName = att.name,
       value = att.value;
     if (containerTarget.attribute[attrName] && containerTarget.attribute[attrName][value])
-        list.push(containerTarget.attribute[attrName][value]);
-    if(containerTarget.attribute[attrName] && containerTarget.attribute[attrName]['*'])
-        list.push(containerTarget.attribute[attrName]['*']);
+      list.push(containerTarget.attribute[attrName][value]);
+    if (containerTarget.attribute[attrName] && containerTarget.attribute[attrName]['*'])
+      list.push(containerTarget.attribute[attrName]['*']);
   }
 
   for (let c of el.classList) {
