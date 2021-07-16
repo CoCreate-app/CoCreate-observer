@@ -69,51 +69,83 @@ module.exports = function define(columns) {
     }
   }
 
-  function spotCheck({ datat, paramValue, isLoopContinue, by = "follow" }) {
-    if (isLoopContinue) {
-      if (datat[paramValue] && datat[paramValue][by]) {
-        datat = datat[paramValue][by];
-      } else {
-        return undefined;
-      }
+  function spotCheckContinue({ datat, paramValue }) {
+    if (datat[paramValue] && datat[paramValue]["follow"]) {
+      datat = datat[paramValue]["follow"];
     } else {
-      if (datat[paramValue] && datat[paramValue].callback) {
-        return datat[paramValue].callback;
-      } else {
-        return undefined;
-      }
+      return undefined;
     }
+
     return datat;
   }
 
+  function spotCheckContinueDeep({ datat, paramValue }) {
+    if (datat[paramValue] && datat[paramValue]["goDeep"]) {
+      datat = datat[paramValue]["goDeep"];
+    } else {
+      return undefined;
+    }
+
+    return datat;
+  }
+
+  function spotCheck({ datat, paramValue }) {
+    if (datat[paramValue] && datat[paramValue].callback) {
+      return datat[paramValue].callback;
+    } else {
+      return undefined;
+    }
+  }
+
   function spot(param) {
-    let datat = data;
-    for (let i = 0; i < colLen; i++) {
-      let isLoopContinue = i + 1 < colLen;
+    let datat = data,
+      i = 0;
+
+    for (; i < colLen - 1; i++) {
+      // let isLoopContinue = i + 1 < colLen;
       let col = columns[i];
       let paramValue = param[col] || "";
       if (Array.isArray(paramValue)) {
         paramValue = paramValue.sort();
         let paramValueLen = paramValue.length;
         for (let j = 0; j < paramValueLen - 1; j++) {
-          let isKeyLoopContinue = j + 1 < paramValueLen;
-          datat = spotCheck({
+          // let isKeyLoopContinue = j + 1 < paramValueLen;
+          datat = spotCheckContinueDeep({
             datat,
             paramValue: paramValue[j],
-            isLoopContinue: isLoopContinue || isKeyLoopContinue,
-
-            by: "goDeep",
           });
+          if (!datat) return undefined;
         }
-        if (!datat) return undefined;
         let last = paramValue[paramValueLen - 1];
-        datat = spotCheck({ datat, paramValue: last, isLoopContinue });
+        datat = spotCheckContinue({ datat, paramValue: last });
         if (!datat) return undefined;
       } else {
-        datat = spotCheck({ datat, paramValue, isLoopContinue });
+        datat = spotCheckContinue({ datat, paramValue });
         if (!datat) return undefined;
       }
     }
+
+    i++;
+    let col = columns[i];
+    let paramValue = param[col] || "";
+    if (Array.isArray(paramValue)) {
+      paramValue = paramValue.sort();
+      let paramValueLen = paramValue.length;
+      for (let j = 0; j < paramValueLen - 1; j++) {
+        datat = spotCheck({
+          datat,
+          paramValue: paramValue[j],
+        });
+        if (!datat) return undefined;
+      }
+      let last = paramValue[paramValueLen - 1];
+      datat = spotCheck({ datat, paramValue: last });
+      if (!datat) return undefined;
+    } else {
+      datat = spotCheck({ datat, paramValue });
+      if (!datat) return undefined;
+    }
+
     return datat;
   }
 
