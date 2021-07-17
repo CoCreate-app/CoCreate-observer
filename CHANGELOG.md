@@ -1,3 +1,11 @@
+## [1.2.13](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.12...v1.2.13) (2021-07-17)
+
+
+### Bug Fixes
+
+* init and update demos scripts ([7b25d0d](https://github.com/CoCreate-app/CoCreate-observer/commit/7b25d0daefbe6a8c13e31717743c90a38e2e66b4))
+* workflows ([cc8c343](https://github.com/CoCreate-app/CoCreate-observer/commit/cc8c3430eb5af4071e783f0cbc79819433e2274a))
+
 ## [1.2.12](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.11...v1.2.12) (2021-07-14)
 
 
