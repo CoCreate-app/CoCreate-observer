@@ -1,3 +1,10 @@
+## [1.2.14](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.13...v1.2.14) (2021-07-24)
+
+
+### Bug Fixes
+
+* parse :not selector ([36caf17](https://github.com/CoCreate-app/CoCreate-observer/commit/36caf17089915491f9e83d9c4f7e636efffd9475))
+
 ## [1.2.13](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.12...v1.2.13) (2021-07-17)
 
 
