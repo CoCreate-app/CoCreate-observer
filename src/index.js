@@ -2,7 +2,7 @@
 // we should keep a binary list of attributes to do fast search and avoid a lot of querySelectorAll
 import parseSelector from "./parseSelector";
 let benchmarker = require("./bench");
-
+let dummyEl = document.createElement('div')
 
 
 let selChunkNameList = ["id", "class", "attribute", "tagName"];
@@ -155,17 +155,35 @@ observer.prototype.registerObserve = function registerObserve(
 ) {
   if (target) {
     let selectors = target.split(",").map((i) => i.trim());
-    for (let selector of selectors) {
+    if (selectors.every(sel => {
+        try {
+          dummyEl.querySelector(sel)
+          return true;
+        }
+        catch (err) {
+          return false;
+        }
+      }))
+      for (let selector of selectors) {
+        let callbackId = idName + ++i;
+        callbackList[callbackId] = {
+          selector,
+          callback,
+          name: this.name
+        };
+
+
+        register(containerTarget, selector, callbackId)
+
+      }
+    else {
       let callbackId = idName + ++i;
       callbackList[callbackId] = {
-        selector,
+        selector: target,
         callback,
         name: this.name
       };
-
-
-      register(containerTarget, selector, callbackId)
-
+      register(containerTarget, target, callbackId)
     }
 
   }
@@ -187,34 +205,40 @@ observer.prototype.registerObserve = function registerObserve(
 
 
 function register(containerTarget, selector, callbackId) {
-  let parsed = parseSelector(selector);
-  if (parsed) {
-    let value = parsed.length <= 1 ? {
-      [callbackId]: "callback"
-    } : {
+  let parsedSelectors = parseSelector(selector);
+  if (!parsedSelectors)
+    return Object.assign(containerTarget.undefinedSelector, {
       [callbackId]: "query"
-    };
-
-    for (let chunkName of parsed) {
+    })
 
 
-      chunkName.value = chunkName.value || '*';
 
-      createOrAttach(
-        containerTarget[chunkName.type],
-        chunkName.name,
-        chunkName.type === "attribute" ? {
-          [chunkName.value]: {
-            ...value
-          },
-        } : value
-      );
+  let value = parsedSelectors.length <= 1 ? {
+    [callbackId]: "callback"
+  } : {
+    [callbackId]: "query"
+  };
 
-    }
+  for (let chunkName of parsedSelectors) {
 
 
+    chunkName.value = chunkName.value || '*';
+
+    createOrAttach(
+      containerTarget[chunkName.type],
+      chunkName.name,
+      chunkName.type === "attribute" ? {
+        [chunkName.value]: {
+          ...value
+        },
+      } : value
+    );
 
   }
+
+
+
+
 
 
 
@@ -274,7 +298,10 @@ observer.prototype.handleAddedNodes = function handleAddedNodes(mutation) {
     if (!addedNode.tagName) continue;
     this.everyElement(addedNode, (el) => {
       let callbacks = runMutations(addedNodesTarget, el);
-      this.runCallbacks(callbacks, { target: el, type: "addedNodes" });
+      this.runCallbacks(callbacks, {
+        target: el,
+        type: "addedNodes"
+      });
     });
   }
 };
@@ -284,7 +311,10 @@ observer.prototype.handleRemovedNodes = function handleRemovedNodes(mutation) {
     if (!addedNode.tagName) continue;
     this.everyElement(addedNode, (el) => {
       let callbacks = runMutations(removedNodesTarget, el);
-      this.runCallbacks(callbacks, { target: el, type: "addedNodes" });
+      this.runCallbacks(callbacks, {
+        target: el,
+        type: "addedNodes"
+      });
     });
   }
 };
@@ -308,7 +338,10 @@ observer.prototype.handleAttributes = function handleAttributes(mutation) {
 
 observer.prototype.runCallbacks = function runCallbacks(callbacks, mutation) {
   for (let [name, callbackType] of Object.entries(callbacks)) {
-    let { callback, selector } = callbackList[name];
+    let {
+      callback,
+      selector
+    } = callbackList[name];
     if (callbackType === "callback") {
       benchmarker.stop('mutation')
       callback(mutation);
@@ -345,7 +378,10 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
   }
 
   for (let [cbName, prop] of Object.entries(addCallbacks)) {
-    let { callbackType, elements } = prop;
+    let {
+      callbackType,
+      elements
+    } = prop;
     if (!callbackList[cbName]) continue;
     let func = callbackList[cbName].callback;
     if (callbackType === "callback") {
