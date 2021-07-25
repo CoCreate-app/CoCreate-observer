@@ -1,11 +1,14 @@
 // todo: run for all mutaitonList addedNodes and removed nodes match with this.mapCallback
 // we should keep a binary list of attributes to do fast search and avoid a lot of querySelectorAll
 import parseSelector from "./parseSelector";
+const CssSelectorParser = require('css-selector-parser').CssSelectorParser;
+const parser = new CssSelectorParser();
+parser.registerAttrEqualityMods('^', '$', '*', '~');
 let benchmarker = require("./bench");
 let dummyEl = document.createElement('div')
 
 
-let selChunkNameList = ["id", "class", "attribute", "tagName"];
+let selchunkList = ["id", "class", "attribute", "tagName"];
 
 let callbackList = {};
 
@@ -100,7 +103,14 @@ observer.prototype.init = function init({
 }) {
   if (!observe || !observe.every((i) => validObserve.includes(i)))
     throw "please enter a valid observe";
-  this.name = name;
+  this.callback = callback;
+  this.attributeName = attributeName;
+  let param = {
+    target,
+    callback,
+    attributeName,
+    name
+  }
   // only childList
   // target += attributeName.map(i => `[${i}]`);
   for (let observeType of observe) {
@@ -117,7 +127,7 @@ observer.prototype.init = function init({
                 undefinedSelector: {}
               };
 
-            this.registerObserve(attributesTarget[att], target, callback);
+            this.registerObserve(attributesTarget[att], target);
           }
         }
         else
@@ -129,17 +139,17 @@ observer.prototype.init = function init({
         break;
       case "childList":
         // console.log(childListTarget);
-        this.registerObserve(childListTarget, target, callback);
+        this.registerObserve(childListTarget, target);
         break;
 
       case "addedNodes":
-        this.registerObserve(addedNodesTarget, target, callback);
+        this.registerObserve(addedNodesTarget, target);
         break;
       case "removedNodes":
-        this.registerObserve(removedNodesTarget, target, callback);
+        this.registerObserve(removedNodesTarget, target);
         break;
         // case "characterData":
-        //   this.registerObserve(characterTarget, target, callback);
+        //   this.registerObserve(characterTarget,target);
         //   break;
 
       default:
@@ -150,97 +160,159 @@ observer.prototype.init = function init({
 
 observer.prototype.registerObserve = function registerObserve(
   containerTarget,
-  target,
-  callback
+  target
 ) {
-  if (target) {
-    let selectors = target.split(",").map((i) => i.trim());
-    if (selectors.every(sel => {
-        try {
-          dummyEl.querySelector(sel)
-          return true;
-        }
-        catch (err) {
-          return false;
-        }
-      }))
-      for (let selector of selectors) {
-        let callbackId = idName + ++i;
-        callbackList[callbackId] = {
-          selector,
-          callback,
-          name: this.name
-        };
+
+  if (!target) {
+    this.register(containerTarget)
+  }
+  else
+    try {
+      let parsedSelector = parser.parse(target);
 
 
-        register(containerTarget, selector, callbackId)
 
-      }
+
+      if (parsedSelector.type == 'selectors')
+        for (let ruleSet of parsedSelector.selectors)
+          this.register(containerTarget, ruleSet.rule)
+      else
+        this.register(containerTarget, parsedSelector.rule)
+
+    }
+  catch (err) {
+    console.error(`can not parse "${target}"`, err);
+  }
+
+
+}
+observer.prototype.ruleToStr = function ruleToStr(rule) {
+  let str = ''
+  if (rule.tagName)
+    str += rule.tagName;
+  if (rule.id)
+    str += '#' + rule.id;
+  if (rule.classNames)
+    for (let cls of rule.classNames)
+      str += '.' + cls;
+  if (rule.attrs)
+    for (let cls of rule.attrs)
+      if (cls.operator)
+        str += '[' + cls.name + cls.operator + cls.value + ']';
+      else
+        str += '[' + cls.name + ']';
+  return str;
+}
+observer.prototype.registerCallbackId = function registerCallbackId(param) {
+  let callbackId = idName + ++i;
+  callbackList[callbackId] = param;
+  return callbackId;
+}
+observer.prototype.register = function register(containerTarget, rule) {
+
+
+
+
+
+  if (rule) {
+    let {
+      count,
+      ruleChunks
+    } = this.getRules(rule, {
+      tagName: 'tagName',
+      id: 'id',
+      classNames: 'class',
+      attrs: 'attribute'
+    });
+    let selector = this.ruleToStr(rule);
+    let callbackId = this.registerCallbackId({
+      target: selector,
+      callback: this.callback
+    })
+
+    if (rule.pseudos || count > 1 || ruleChunks[0].operator && ruleChunks[0].operator != '=')
+      return Object.assign(containerTarget.undefinedSelector, {
+        [callbackId]: "query"
+      })
     else {
-      let callbackId = idName + ++i;
-      callbackList[callbackId] = {
-        selector: target,
-        callback,
-        name: this.name
+
+      let value = {
+        [callbackId]: "callback"
       };
-      register(containerTarget, target, callbackId)
+      let chunk = ruleChunks[0]
+
+      chunk.value = chunk.value || '*';
+
+      createOrAttach(
+        containerTarget[chunk.type],
+        chunk.name,
+        chunk.type === "attribute" ? {
+          [chunk.value]: {
+            ...value
+          },
+        } : value
+      );
+
+
+
+
     }
 
   }
   else {
-    let callbackId = idName + ++i;
-    callbackList[callbackId] = {
-      callback,
-      name: this.name
-    };
-
-
-    Object.assign(containerTarget.undefinedSelector, {
+    let callbackId = this.registerCallbackId({
+      callback: this.callback
+    })
+    return Object.assign(containerTarget.undefinedSelector, {
       [callbackId]: "callback"
     })
 
-
   }
+
+
 }
 
 
-function register(containerTarget, selector, callbackId) {
-  let parsedSelectors = parseSelector(selector);
-  if (!parsedSelectors)
-    return Object.assign(containerTarget.undefinedSelector, {
-      [callbackId]: "query"
-    })
 
+observer.prototype.getRules = function getRules(ruleSet, keys) {
+  let ruleChunks = [];
+  let count = 0;
 
-
-  let value = parsedSelectors.length <= 1 ? {
-    [callbackId]: "callback"
-  } : {
-    [callbackId]: "query"
-  };
-
-  for (let chunkName of parsedSelectors) {
-
-
-    chunkName.value = chunkName.value || '*';
-
-    createOrAttach(
-      containerTarget[chunkName.type],
-      chunkName.name,
-      chunkName.type === "attribute" ? {
-        [chunkName.value]: {
-          ...value
-        },
-      } : value
-    );
-
+  function add(data) {
+    count++;
+    ruleChunks.push(data);
   }
 
+  for (let [source, dest] of Object.entries(keys))
+    if (ruleSet[source]) {
+      if (Array.isArray(ruleSet[source]))
+        for (let cl of ruleSet[source]) {
+          if (typeof cl == 'object')
+            add({
+              type: dest,
+              ...cl
+            })
 
 
+          else
+            add({
+              type: dest,
+              name: cl
+            })
+
+        }
+      else
+        add({
+          type: dest,
+          name: ruleSet[source]
+        })
+    }
 
 
-
+  return {
+    count,
+    ruleChunks
+  };
 
 }
 
