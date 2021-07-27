@@ -30,8 +30,4 @@ function parseSelector(str) {
   }
   return str.length ? false : list;
 }
-
-
-console.log(parseSelector('div#id.caa.gg[aaa]'))
-
-// export default parseSelector;
+export default parseSelector;
