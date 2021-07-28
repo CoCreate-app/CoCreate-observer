@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.15...v1.3.0) (2021-07-28)
+
+
+### Features
+
+* add new is{attribute} system and remove data- from attributtes ([8c187f0](https://github.com/CoCreate-app/CoCreate-observer/commit/8c187f059f2bfc861c2e57e19714b8c58ecdd178))
+
 ## [1.2.15](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.14...v1.2.15) (2021-07-27)
 
 
