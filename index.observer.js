@@ -4,7 +4,7 @@
 CoCreate.observer.init({ 
 	name: 'CoCreateFetchInit', // no usage, just to provide for console debugging 
 	observe: ['subtree', 'childList','attributes'], // the same parameters of options in #https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe
-	attributes: ['data-fetch_collection'], // it doesn't count added nodes or remove nodes
+	attributes: ['fetch-collection'], // it doesn't count added nodes or remove nodes
 	include: ".classname", // a selector to select only elements that matches
 	exclude: ".classname", // a selector to exclude elements from processing
 	callback: function(mutation) { // a function which gets a mutation object according to #https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord
