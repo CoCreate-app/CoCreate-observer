@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.0...v1.3.1) (2021-07-28)
+
+
+### Bug Fixes
+
+* remove data- from fetch, pass and filter ([c5e8b03](https://github.com/CoCreate-app/CoCreate-observer/commit/c5e8b03af6358869c9ceb303920837b1dd477f66))
+
 # [1.3.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.2.15...v1.3.0) (2021-07-28)
 
 
