@@ -1,3 +1,11 @@
+## [1.3.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.1...v1.3.2) (2021-08-02)
+
+
+### Bug Fixes
+
+* remove data- from attributes ([4a13704](https://github.com/CoCreate-app/CoCreate-observer/commit/4a13704b78ff0c7e578d5bb980817cf55bbe2f03))
+* update data-fullscreen to fullscreen ([fe78f5c](https://github.com/CoCreate-app/CoCreate-observer/commit/fe78f5cfb2f1a5703401bf5ee5595b264d0c38ad))
+
 ## [1.3.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.0...v1.3.1) (2021-07-28)
 
 
