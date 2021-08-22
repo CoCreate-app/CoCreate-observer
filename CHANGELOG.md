@@ -1,3 +1,10 @@
+## [1.3.6](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.5...v1.3.6) (2021-08-22)
+
+
+### Bug Fixes
+
+* removed data- from main-content, clone, filter-value_type ([eb29496](https://github.com/CoCreate-app/CoCreate-observer/commit/eb29496b841d0408b9f869d691588d754dc64cdd))
+
 ## [1.3.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.4...v1.3.5) (2021-08-22)
 
 
