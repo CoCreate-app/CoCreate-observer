@@ -307,13 +307,13 @@ observer.prototype.handleAddedNodes = function handleAddedNodes(mutation) {
 };
 
 observer.prototype.handleRemovedNodes = function handleRemovedNodes(mutation) {
-  for (let addedNode of mutation.addedNodes) {
-    if (!addedNode.tagName) continue;
-    this.everyElement(addedNode, (el) => {
+  for (let removedNode of mutation.removedNodes) {
+    if (!removedNode.tagName) continue;
+    this.everyElement(removedNode, (el) => {
       let callbacks = runMutations(removedNodesTarget, el);
       this.runCallbacks(callbacks, {
         target: el,
-        type: "addedNodes"
+        type: "removedNodes"
       });
     });
   }
