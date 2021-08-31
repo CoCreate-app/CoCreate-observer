@@ -1,3 +1,10 @@
+## [1.3.9](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.8...v1.3.9) (2021-08-31)
+
+
+### Bug Fixes
+
+* removedNodes variables ([5f4f8f9](https://github.com/CoCreate-app/CoCreate-observer/commit/5f4f8f92329fd9dfd6d25879875dbe0583303a33))
+
 ## [1.3.8](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.7...v1.3.8) (2021-08-27)
 
 
