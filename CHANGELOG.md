@@ -1,3 +1,10 @@
+## [1.3.13](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.12...v1.3.13) (2021-09-09)
+
+
+### Bug Fixes
+
+* CoCreate.config directory, path, name and  public ([49ff119](https://github.com/CoCreate-app/CoCreate-observer/commit/49ff1192e6c75932949a27d8fdf8dc1f400ef4b2))
+
 ## [1.3.12](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.11...v1.3.12) (2021-09-08)
 
 
