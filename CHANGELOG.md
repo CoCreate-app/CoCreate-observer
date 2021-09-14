@@ -1,3 +1,10 @@
+## [1.3.19](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.18...v1.3.19) (2021-09-14)
+
+
+### Bug Fixes
+
+* add cocreate.app to domains ([001fbfd](https://github.com/CoCreate-app/CoCreate-observer/commit/001fbfd344dddeece28549d438a4b8dbaf7e6a84))
+
 ## [1.3.18](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.17...v1.3.18) (2021-09-13)
 
 
