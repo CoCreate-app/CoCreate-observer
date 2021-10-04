@@ -1,3 +1,10 @@
+## [1.3.24](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.23...v1.3.24) (2021-10-04)
+
+
+### Bug Fixes
+
+* update dependencies ([aa8430f](https://github.com/CoCreate-app/CoCreate-observer/commit/aa8430f7a9c6c51058cde85e8585536c299b23f3))
+
 ## [1.3.23](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.22...v1.3.23) (2021-10-01)
 
 
