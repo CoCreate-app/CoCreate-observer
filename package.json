@@ -1,6 +1,6 @@
 {
   "name": "@cocreate/observer",
-  "version": "1.3.25",
+  "version": "1.3.26",
   "description": "Register a components init function & observe selector. The init function will be fired immedietly after detection of selector.",
   "keywords": [
     "observer",
