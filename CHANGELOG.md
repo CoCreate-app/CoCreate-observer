@@ -1,3 +1,10 @@
+## [1.3.33](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.32...v1.3.33) (2021-10-16)
+
+
+### Bug Fixes
+
+* update socket package to fix bug in docs ([19d0f7d](https://github.com/CoCreate-app/CoCreate-observer/commit/19d0f7d1ec390e0f27d1c653d055de556186fbfc))
+
 ## [1.3.32](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.31...v1.3.32) (2021-10-15)
 
 
