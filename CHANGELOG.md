@@ -1,3 +1,10 @@
+## [1.3.47](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.46...v1.3.47) (2021-11-20)
+
+
+### Bug Fixes
+
+* remove cdn.CoCreate.min.css ([e309019](https://github.com/CoCreate-app/CoCreate-observer/commit/e30901957f7bbbd6aeccb21fff43fe67bf4cfec1))
+
 ## [1.3.46](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.45...v1.3.46) (2021-11-20)
 
 
