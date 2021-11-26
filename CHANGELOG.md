@@ -1,3 +1,10 @@
+## [1.3.50](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.49...v1.3.50) (2021-11-26)
+
+
+### Bug Fixes
+
+* docs sidenav width ([d573521](https://github.com/CoCreate-app/CoCreate-observer/commit/d573521d4a4a356832775a4cab387b65a4101bf7))
+
 ## [1.3.49](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.48...v1.3.49) (2021-11-26)
 
 
