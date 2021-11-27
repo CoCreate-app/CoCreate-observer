@@ -1,3 +1,10 @@
+## [1.3.51](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.50...v1.3.51) (2021-11-27)
+
+
+### Bug Fixes
+
+* update docs api and cocreateJS script ([b096989](https://github.com/CoCreate-app/CoCreate-observer/commit/b096989aeb99deabd67514101f707d878678a28c))
+
 ## [1.3.50](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.49...v1.3.50) (2021-11-26)
 
 
