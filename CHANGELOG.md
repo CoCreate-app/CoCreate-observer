@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.56...v1.4.0) (2022-02-01)
+
+
+### Features
+
+* observe documentElement instead of body ([1c57178](https://github.com/CoCreate-app/CoCreate-observer/commit/1c5717810239dc2893a0f46ab0ce7ce33096f3f1))
+
 ## [1.3.56](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.3.55...v1.3.56) (2022-01-01)
 
 
