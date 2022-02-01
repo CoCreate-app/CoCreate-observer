@@ -91,6 +91,7 @@ const validObserve = [
   "characterData",
   "childList",
 ];
+
 observer.prototype.init = function init({
   observe,
   attributeName,
@@ -235,12 +236,6 @@ function register(containerTarget, selector, callbackId) {
     );
 
   }
-
-
-
-
-
-
 
 }
 
@@ -481,4 +476,4 @@ observer.prototype.getInitialized = function(element, type) {
   }
 };
 
-export default new observer(document.body);
+export default new observer(document.documentElement);
