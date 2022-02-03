@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.4.1...v1.4.2) (2022-02-03)
+
+
+### Bug Fixes
+
+* replaced show and hide class hidden with attribute hidden ([01e22a5](https://github.com/CoCreate-app/CoCreate-observer/commit/01e22a54b719d5545b029b2db39e0e4fd8f82fd7))
+
 ## [1.4.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.4.0...v1.4.1) (2022-02-01)
 
 
