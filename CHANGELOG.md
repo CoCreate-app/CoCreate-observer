@@ -1,3 +1,10 @@
+## [1.4.7](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.4.6...v1.4.7) (2022-05-06)
+
+
+### Bug Fixes
+
+* update config organization_Id to organization_id ([5b9fd72](https://github.com/CoCreate-app/CoCreate-observer/commit/5b9fd72cca1a3f152fd066e39c4ee53cac9e4d4c))
+
 ## [1.4.6](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.4.5...v1.4.6) (2022-02-24)
 
 
