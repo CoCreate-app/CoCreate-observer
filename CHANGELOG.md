@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.4.7...v1.5.0) (2022-05-14)
+
+
+### Features
+
+* function readDocumentList has been renamed to readDocuments ([e23accd](https://github.com/CoCreate-app/CoCreate-observer/commit/e23accd3388071d206a057407d8b6d6b98edb88a))
+
 ## [1.4.7](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.4.6...v1.4.7) (2022-05-06)
 
 
