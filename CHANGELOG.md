@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.0...v1.5.1) (2022-05-17)
+
+
+### Bug Fixes
+
+* update document_id on link index.css ([f0e5871](https://github.com/CoCreate-app/CoCreate-observer/commit/f0e5871db53608e246cfcd85fb6df262846f688e))
+
 # [1.5.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.4.7...v1.5.0) (2022-05-14)
 
 
