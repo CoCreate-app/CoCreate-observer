@@ -1,3 +1,10 @@
+## [1.5.6](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.5...v1.5.6) (2022-09-29)
+
+
+### Bug Fixes
+
+* config renameed to CoCreateConfig ([4c6ad1a](https://github.com/CoCreate-app/CoCreate-observer/commit/4c6ad1ab5d08bfa2cd5ab785d438ffcc90271292))
+
 ## [1.5.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.4...v1.5.5) (2022-09-01)
 
 
