@@ -1,3 +1,10 @@
+## [1.5.16](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.15...v1.5.16) (2022-10-02)
+
+
+### Bug Fixes
+
+* bump @cocreate/hosting and @cocreate/socket-client ([3c2fa07](https://github.com/CoCreate-app/CoCreate-observer/commit/3c2fa07835d9b5e0a60b4663affbe08ef7bb9f2d))
+
 ## [1.5.15](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.14...v1.5.15) (2022-10-01)
 
 
