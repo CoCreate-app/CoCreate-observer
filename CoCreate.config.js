@@ -10,7 +10,7 @@ module.exports = {
             "collection": "files",
             "document_id": "602079ba3c260207bf49cab6",
             "key": "src",
-            "data":{
+            "document": {
                 "name": "index.html",
                 "path": "/docs/observer/index.html",
                 "domains": [
