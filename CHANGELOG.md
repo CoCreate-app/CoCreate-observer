@@ -1,3 +1,10 @@
+## [1.5.23](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.22...v1.5.23) (2022-11-21)
+
+
+### Bug Fixes
+
+* @cocreate/docs bug fix ([c8b8f38](https://github.com/CoCreate-app/CoCreate-observer/commit/c8b8f382e1739dfa584e165199377b8a221e4256))
+
 ## [1.5.22](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.21...v1.5.22) (2022-11-21)
 
 
