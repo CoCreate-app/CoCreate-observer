@@ -1,3 +1,10 @@
+## [1.5.22](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.21...v1.5.22) (2022-11-21)
+
+
+### Bug Fixes
+
+* replaced document_id with document._id ([e77a82c](https://github.com/CoCreate-app/CoCreate-observer/commit/e77a82ce517a9bb1ccc7300b5083bd2d4964e7a3))
+
 ## [1.5.21](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.20...v1.5.21) (2022-11-21)
 
 
