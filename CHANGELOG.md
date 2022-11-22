@@ -1,3 +1,10 @@
+## [1.5.25](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.24...v1.5.25) (2022-11-22)
+
+
+### Bug Fixes
+
+* workflow docs ([d59b7b9](https://github.com/CoCreate-app/CoCreate-observer/commit/d59b7b9ee84481f0b87c7c0a699f439e10c37170))
+
 ## [1.5.24](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.23...v1.5.24) (2022-11-22)
 
 
