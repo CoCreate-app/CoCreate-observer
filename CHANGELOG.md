@@ -1,3 +1,10 @@
+## [1.5.24](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.23...v1.5.24) (2022-11-22)
+
+
+### Bug Fixes
+
+* apply src: {{source}} to CoCreate.config ([2c36e17](https://github.com/CoCreate-app/CoCreate-observer/commit/2c36e174d7c6b6b85fc66baae05457caaf55ffaa))
+
 ## [1.5.23](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.22...v1.5.23) (2022-11-21)
 
 
