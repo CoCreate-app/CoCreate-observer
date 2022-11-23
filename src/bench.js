@@ -14,7 +14,7 @@ entries.push({spend, context: this.context})
 };
 
 measure.prototype.start = function start(name, context ) {
-  if(context)
+  if (context)
 this.context = context;
 this.startTime = performance.now();
 };

@@ -65,7 +65,7 @@ module.exports = function define(columns) {
       } else {
         datat = check({ datat, key, isLoopContinue, saveData });
       }
-      // if(key is array) iterate by go deep
+      // if (key is array) iterate by go deep
     }
   }
 
