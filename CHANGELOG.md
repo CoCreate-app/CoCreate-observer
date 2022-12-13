@@ -1,3 +1,10 @@
+## [1.5.41](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.40...v1.5.41) (2022-12-13)
+
+
+### Bug Fixes
+
+* removed un used devDependencies ([558bff2](https://github.com/CoCreate-app/CoCreate-observer/commit/558bff27bdb955d6c99f605d79e0c7bf97e2131b))
+
 ## [1.5.40](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.39...v1.5.40) (2022-12-13)
 
 
