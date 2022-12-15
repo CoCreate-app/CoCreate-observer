@@ -1,3 +1,10 @@
+## [1.5.42](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.41...v1.5.42) (2022-12-15)
+
+
+### Bug Fixes
+
+* add missing dev dependency style-loader ([0515d6b](https://github.com/CoCreate-app/CoCreate-observer/commit/0515d6beef1652ca2053ee5c7927b9d3e4d1696f))
+
 ## [1.5.41](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.40...v1.5.41) (2022-12-13)
 
 
