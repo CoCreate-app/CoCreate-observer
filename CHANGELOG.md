@@ -1,3 +1,10 @@
+## [1.5.48](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.47...v1.5.48) (2022-12-25)
+
+
+### Bug Fixes
+
+* bump dependencies ([c7d2193](https://github.com/CoCreate-app/CoCreate-observer/commit/c7d219308cc4d1c14d0662d8ae0125bee8ba04ac))
+
 ## [1.5.47](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.46...v1.5.47) (2022-12-23)
 
 
