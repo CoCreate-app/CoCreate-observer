@@ -1,3 +1,10 @@
+## [1.5.51](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.50...v1.5.51) (2022-12-30)
+
+
+### Bug Fixes
+
+* update config sources to use template  braces with entry on src ([022803a](https://github.com/CoCreate-app/CoCreate-observer/commit/022803a3e1a931237ed85b228b82453a51516c01))
+
 ## [1.5.50](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.49...v1.5.50) (2022-12-29)
 
 
