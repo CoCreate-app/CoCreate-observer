@@ -1,3 +1,10 @@
+## [1.5.53](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.52...v1.5.53) (2023-01-01)
+
+
+### Bug Fixes
+
+* docs sanbox overflow ([ca78eae](https://github.com/CoCreate-app/CoCreate-observer/commit/ca78eae7536f06628e00214d7eb1b8881a8181e3))
+
 ## [1.5.52](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.51...v1.5.52) (2022-12-31)
 
 
