@@ -1,3 +1,11 @@
+## [1.5.55](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.54...v1.5.55) (2023-01-06)
+
+
+### Bug Fixes
+
+* bump dependencies, worklow [@v3](https://github.com/v3) ([d2362ce](https://github.com/CoCreate-app/CoCreate-observer/commit/d2362cedbbf47e9a4fd22d0ab23fad2850f46a69))
+* edit in github btn styles ([448fdff](https://github.com/CoCreate-app/CoCreate-observer/commit/448fdff3d44e10eee29b9d13e03f0ee91baa77fa))
+
 ## [1.5.54](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.53...v1.5.54) (2023-01-05)
 
 
