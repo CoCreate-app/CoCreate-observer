@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.63...v1.6.0) (2023-03-16)
+
+
+### Features
+
+* replaced get-value and set-value with a super charged version of CoCreate-events ([49ab800](https://github.com/CoCreate-app/CoCreate-observer/commit/49ab8008276f05deb551d5445ba44286e7c1cd48))
+
 ## [1.5.63](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.5.62...v1.5.63) (2023-02-01)
 
 
