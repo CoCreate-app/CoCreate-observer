@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.6.3...v1.6.4) (2023-04-11)
+
+
+### Bug Fixes
+
+* renamed domans to hosts ([a7d000a](https://github.com/CoCreate-app/CoCreate-observer/commit/a7d000a13391c3165e0142c19996890e91561dc9))
+
 ## [1.6.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.6.2...v1.6.3) (2023-03-30)
 
 
