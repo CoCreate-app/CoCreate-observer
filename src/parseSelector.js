@@ -9,8 +9,10 @@ let selectorReg = {
 
 function filter(type, obj) {
   if (type === "tagName") {
-    for (let [key, value] of Object.entries(obj))
+    for (let key of Object.keys(obj)) {
+      let value = obj[key]
       obj[key] = value.toUpperCase();
+    }
   }
   return obj;
 }
@@ -20,7 +22,8 @@ function parseSelector(str) {
     lastLen = 0;
   while (str.length !== lastLen) {
     lastLen = str.length;
-    for (let [regName, regValue] of Object.entries(selectorReg)) {
+    for (let regName of Object.keys(selectorReg)) {
+      let regValue = selectorReg[regName]
       let match = str.match(regValue);
       if (match && match.index === 0) {
         list.push({ ...filter(regName, { ...match.groups }), type: regName });

@@ -244,14 +244,17 @@ function removeCallback(obj, id, parent, key) {
     delete obj[id];
     if (parent && Object.keys(obj).length === 0) delete parent[key];
   }
-  for (let [key, value] of Object.entries(obj))
+  for (let key of Object.keys(obj)) {
+    let value = obj[key]
     if (value.constructor.name == "Object") removeCallback(value, id, obj, key);
+  }
 }
 
 observer.prototype.uninit = function uninit(callback) {
 
   let callbackId;
-  for (let [key, value] of Object.entries(callbackList)) {
+  for (let key of Object.keys(callbackList)) {
+    let value = callbackList[key]
     if (value.callback === callback) {
       callbackId = key;
 
@@ -332,7 +335,8 @@ observer.prototype.handleAttributes = function handleAttributes(mutation) {
 };
 
 observer.prototype.runCallbacks = function runCallbacks(callbacks, mutation) {
-  for (let [name, callbackType] of Object.entries(callbacks)) {
+  for (let name of Object.keys(callbacks)) {
+    let callbackType = callbacks[name]
     let {
       callback,
       selector
@@ -364,7 +368,8 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
     if (!addedNode.tagName) continue;
     this.everyElement(addedNode, (el) => {
       let callbacks = runMutations(childListTarget, el);
-      for (let [cbName, callbackType] of Object.entries(callbacks)) {
+      for (let cbName of Object.keys(callbacks)) {
+        let callbackType = callbacks[cbName]
         createOrAttach(addCallbacks, cbName, {});
         addCallbacks[cbName]["callbackType"] = callbackType;
         createOrPush(addCallbacks[cbName], "elements", el);
@@ -372,7 +377,8 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
     });
   }
 
-  for (let [cbName, prop] of Object.entries(addCallbacks)) {
+  for (let cbName of Object.keys(addCallbacks)) {
+    let prop = addCallbacks[cbName]
     let {
       callbackType,
       elements
