@@ -1,3 +1,10 @@
+## [1.6.7](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.6.6...v1.6.7) (2023-04-13)
+
+
+### Bug Fixes
+
+* replaced substr with substring ([e44421a](https://github.com/CoCreate-app/CoCreate-observer/commit/e44421a014d1cf90e4d5584917cc8d630f39a4c7))
+
 ## [1.6.6](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.6.5...v1.6.6) (2023-04-11)
 
 
