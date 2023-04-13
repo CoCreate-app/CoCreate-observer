@@ -1,3 +1,10 @@
+## [1.6.8](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.6.7...v1.6.8) (2023-04-13)
+
+
+### Bug Fixes
+
+* replaced object.entries with Object.keys ([bf04429](https://github.com/CoCreate-app/CoCreate-observer/commit/bf04429b31b792db1ef0109ef8fab618e46d777b))
+
 ## [1.6.7](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.6.6...v1.6.7) (2023-04-13)
 
 
