@@ -24,7 +24,7 @@ function parseSelector(str) {
       let match = str.match(regValue);
       if (match && match.index === 0) {
         list.push({ ...filter(regName, { ...match.groups }), type: regName });
-        str = str.substr(match[0].length);
+        str = str.substring(match[0].length);
       }
     }
   }
