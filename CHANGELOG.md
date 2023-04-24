@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.6.8...v1.7.0) (2023-04-24)
+
+
+### Features
+
+* added pwa manifest ([58e4304](https://github.com/CoCreate-app/CoCreate-observer/commit/58e4304726f7ebda17a08696a9744d2e3651309e))
+
 ## [1.6.8](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.6.7...v1.6.8) (2023-04-13)
 
 
