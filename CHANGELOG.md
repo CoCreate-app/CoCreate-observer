@@ -1,3 +1,11 @@
+## [1.7.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.2...v1.7.3) (2023-04-24)
+
+
+### Bug Fixes
+
+* updated worrkflows to v3 and node version 16 ([e0166c2](https://github.com/CoCreate-app/CoCreate-observer/commit/e0166c2d2b220067a5fe06ac2925ed5962337fa6))
+* workflow node version updated  16 ([78e9504](https://github.com/CoCreate-app/CoCreate-observer/commit/78e95048e00f86a0ce9ef7ca07998b597898323f))
+
 ## [1.7.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.1...v1.7.2) (2023-04-24)
 
 
