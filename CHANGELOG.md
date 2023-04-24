@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.0...v1.7.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* removed uglify.js from dev dependencies ([61a0df1](https://github.com/CoCreate-app/CoCreate-observer/commit/61a0df1313428feda9243b62f7f5575fd180418e))
+
 # [1.7.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.6.8...v1.7.0) (2023-04-24)
 
 
