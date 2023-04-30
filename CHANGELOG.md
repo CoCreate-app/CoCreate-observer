@@ -1,3 +1,12 @@
+## [1.7.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.3...v1.7.4) (2023-04-30)
+
+
+### Bug Fixes
+
+* fullscreen target updated to fullscreen fullscreen-target ([68c5937](https://github.com/CoCreate-app/CoCreate-observer/commit/68c59370562340fc84f899be83854ea38866f80e))
+* package-lock.json and pnpm-lock.yaml added to .gitignore ([2aec4b2](https://github.com/CoCreate-app/CoCreate-observer/commit/2aec4b28c472e2d17c79660daf33018b7d0ee900))
+* removed toogle fullscreen icons. now using css content ([10eed61](https://github.com/CoCreate-app/CoCreate-observer/commit/10eed6154d1040fd80aa3f6599c45f39e02deb7c))
+
 ## [1.7.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.2...v1.7.3) (2023-04-24)
 
 
