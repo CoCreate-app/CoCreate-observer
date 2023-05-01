@@ -1,3 +1,10 @@
+## [1.7.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.4...v1.7.5) (2023-05-01)
+
+
+### Bug Fixes
+
+* replace fontawesome with svg ([fb6d478](https://github.com/CoCreate-app/CoCreate-observer/commit/fb6d478134d75a97bc75a518a93592caa4e6fe2b))
+
 ## [1.7.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.3...v1.7.4) (2023-04-30)
 
 
