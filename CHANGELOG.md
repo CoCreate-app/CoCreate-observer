@@ -1,3 +1,10 @@
+## [1.7.6](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.5...v1.7.6) (2023-05-01)
+
+
+### Bug Fixes
+
+* update manifest.json to manifest.webmanifest ([def982f](https://github.com/CoCreate-app/CoCreate-observer/commit/def982f096070dffc3feab9a0320ef7ece888814))
+
 ## [1.7.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.4...v1.7.5) (2023-05-01)
 
 
