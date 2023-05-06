@@ -1,3 +1,10 @@
+## [1.7.7](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.6...v1.7.7) (2023-05-06)
+
+
+### Bug Fixes
+
+* bump [@cocreate](https://github.com/cocreate) dependencies ([fda80bf](https://github.com/CoCreate-app/CoCreate-observer/commit/fda80bf7160044f1bf39146908ad6636689a90f8))
+
 ## [1.7.6](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.5...v1.7.6) (2023-05-01)
 
 
