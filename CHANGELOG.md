@@ -1,3 +1,10 @@
+## [1.7.8](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.7...v1.7.8) (2023-05-10)
+
+
+### Bug Fixes
+
+* apikey renamed to key ([1725d33](https://github.com/CoCreate-app/CoCreate-observer/commit/1725d33b6114bd9d56e91a82d88c746c267ea815))
+
 ## [1.7.7](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.6...v1.7.7) (2023-05-06)
 
 
