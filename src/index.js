@@ -1,4 +1,4 @@
-// todo: run for all mutaitonList addedNodes and removed nodes match with this.mapCallback
+// TODO: run for all mutaitonList addedNodes and removed nodes match with this.mapCallback
 // we should keep a binary list of attributes to do fast search and avoid a lot of querySelectorAll
 import parseSelector from "./parseSelector";
 let benchmarker = require("./bench");
