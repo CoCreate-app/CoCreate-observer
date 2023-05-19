@@ -1,3 +1,10 @@
+## [1.7.9](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.8...v1.7.9) (2023-05-19)
+
+
+### Bug Fixes
+
+* update packages to latest version. This commit updates various packages in the dependencies section of the package.json file to their latest published versions, thereby fixing multiple bugs and improving overall performance. ([0da216e](https://github.com/CoCreate-app/CoCreate-observer/commit/0da216e17d397f02d9989a2f464739f1d6e581e8))
+
 ## [1.7.8](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.7...v1.7.8) (2023-05-10)
 
 
