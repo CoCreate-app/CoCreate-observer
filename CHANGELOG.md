@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.10...v1.8.0) (2023-05-27)
+
+
+### Features
+
+* Refactored observer function to add support for :has() and :not() selectors; improved code readability by using more descriptive variable names. ([d1a451e](https://github.com/CoCreate-app/CoCreate-observer/commit/d1a451ec91ec715865b5b291e4f6e143747f14bd))
+
 ## [1.7.10](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.9...v1.7.10) (2023-05-21)
 
 
