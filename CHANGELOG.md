@@ -1,3 +1,11 @@
+## [1.8.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.0...v1.8.1) (2023-06-02)
+
+
+### Bug Fixes
+
+* format demo html ([bb842ef](https://github.com/CoCreate-app/CoCreate-observer/commit/bb842ef5c69ed68391fa750af4739e442561081d))
+* Update dependencies versions for [@cocreate](https://github.com/cocreate) libraries ([01c993a](https://github.com/CoCreate-app/CoCreate-observer/commit/01c993a6bdebb6351b69abb8e6cae7b2dcfd3689))
+
 # [1.8.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.7.10...v1.8.0) (2023-05-27)
 
 
