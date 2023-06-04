@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.1...v1.8.2) (2023-06-04)
+
+
+### Bug Fixes
+
+* **semantic-release:** worklow error solved by running node version 14 ([67bf8c0](https://github.com/CoCreate-app/CoCreate-observer/commit/67bf8c0dd29467785dad91e6b9007655a40dcaa8))
+
 ## [1.8.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.0...v1.8.1) (2023-06-02)
 
 
