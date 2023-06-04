@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.2...v1.8.3) (2023-06-04)
+
+
+### Bug Fixes
+
+* [@v3](https://github.com/v3) ([65d15c4](https://github.com/CoCreate-app/CoCreate-observer/commit/65d15c4725c0f0a2bf25525809be732229a5e085))
+
 ## [1.8.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.1...v1.8.2) (2023-06-04)
 
 
