@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.4...v1.8.5) (2023-06-04)
+
+
+### Bug Fixes
+
+* Refactor CoCreate.config.js to remove hard-coded credentials ([87829c3](https://github.com/CoCreate-app/CoCreate-observer/commit/87829c3e993bfe39cd65ef988d29a8fe905a918f))
+
 ## [1.8.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.3...v1.8.4) (2023-06-04)
 
 
