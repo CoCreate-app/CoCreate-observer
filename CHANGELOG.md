@@ -1,3 +1,10 @@
+## [1.8.8](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.7...v1.8.8) (2023-06-11)
+
+
+### Bug Fixes
+
+* renamed hosts to host. the value can be a string or an array of strings ([2c6ff4e](https://github.com/CoCreate-app/CoCreate-observer/commit/2c6ff4ec9b2babffaa770b646f7c02fd6e083e0f))
+
 ## [1.8.7](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.6...v1.8.7) (2023-06-10)
 
 
