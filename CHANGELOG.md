@@ -1,3 +1,10 @@
+## [1.8.16](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.15...v1.8.16) (2023-06-11)
+
+
+### Bug Fixes
+
+* testing workflow ([ec32c5c](https://github.com/CoCreate-app/CoCreate-observer/commit/ec32c5c4030217e2ae64fb8da9ea4c1c2e56898b))
+
 ## [1.8.15](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.14...v1.8.15) (2023-06-11)
 
 
