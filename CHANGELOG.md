@@ -1,3 +1,10 @@
+## [1.8.11](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.10...v1.8.11) (2023-06-11)
+
+
+### Bug Fixes
+
+* postintall error ([009bf54](https://github.com/CoCreate-app/CoCreate-observer/commit/009bf549db187c417a6b520d88892f5018cb9b73))
+
 ## [1.8.10](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.9...v1.8.10) (2023-06-11)
 
 
