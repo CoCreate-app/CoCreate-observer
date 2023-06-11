@@ -1,3 +1,10 @@
+## [1.8.10](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.9...v1.8.10) (2023-06-11)
+
+
+### Bug Fixes
+
+* @cocreate/cli moved to dependencies ([1e79950](https://github.com/CoCreate-app/CoCreate-observer/commit/1e79950c6e2da8c8e6f7f5b45c9e6b9bbe1c9322))
+
 ## [1.8.9](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.8...v1.8.9) (2023-06-11)
 
 
