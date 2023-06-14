@@ -1,3 +1,10 @@
+## [1.8.19](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.18...v1.8.19) (2023-06-14)
+
+
+### Bug Fixes
+
+* Update dependencies versions for [@cocreate](https://github.com/cocreate) libraries ([a2256c9](https://github.com/CoCreate-app/CoCreate-observer/commit/a2256c9c5046e045c4ba764fa6ccaec564b37db6))
+
 ## [1.8.18](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.17...v1.8.18) (2023-06-11)
 
 
