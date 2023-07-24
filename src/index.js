@@ -317,10 +317,19 @@ observer.prototype.handleAddedNodes = function handleAddedNodes(mutation) {
     for (let addedNode of mutation.addedNodes) {
         if (!addedNode.tagName) continue;
         this.everyElement(addedNode, (el) => {
+            let movedFrom = el.movedFrom
+            if (movedFrom) {
+                delete el.movedFrom
+            }
+
             let callbacks = runMutations(addedNodesTarget, el);
             this.runCallbacks(callbacks, {
                 target: el,
-                type: "addedNodes"
+                type: "addedNodes",
+                parentElement: mutation.target,
+                previousSibling: mutation.previousSibling,
+                nextSibling: mutation.nextSibling,
+                movedFrom
             });
         });
     }
@@ -330,10 +339,20 @@ observer.prototype.handleRemovedNodes = function handleRemovedNodes(mutation) {
     for (let removedNode of mutation.removedNodes) {
         if (!removedNode.tagName) continue;
         this.everyElement(removedNode, (el) => {
+            if (el.parentElement)
+                el.movedFrom = {
+                    parentElement: mutation.target,
+                    previousSibling: mutation.previousSibling,
+                    nextSibling: mutation.nextSibling
+                }
+
             let callbacks = runMutations(removedNodesTarget, el);
             this.runCallbacks(callbacks, {
                 target: el,
-                type: "removedNodes"
+                type: "removedNodes",
+                parentElement: mutation.target,
+                previousSibling: mutation.previousSibling,
+                nextSibling: mutation.nextSibling
             });
         });
     }
