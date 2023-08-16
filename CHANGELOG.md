@@ -1,3 +1,18 @@
+# [1.9.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.19...v1.9.0) (2023-08-16)
+
+
+### Bug Fixes
+
+* crud attributes renamed ([ee2e299](https://github.com/CoCreate-app/CoCreate-observer/commit/ee2e2990822cad0787f6b365701c0f4585e58f6e))
+* replace -target -selector ([65ab604](https://github.com/CoCreate-app/CoCreate-observer/commit/65ab604fd89b4b84f7aa2eda059c6e59cb9acb1e))
+* webpack.config and package.json make use of mode=production instead of process.env ([21e65a5](https://github.com/CoCreate-app/CoCreate-observer/commit/21e65a51597ad85ff526cf11f0eda1a981344d82))
+
+
+### Features
+
+* name attribute and variable renamed to key ([6cfeac1](https://github.com/CoCreate-app/CoCreate-observer/commit/6cfeac19bd73b2fd469bd426c1be5f0a3717179f))
+* Refactor handleAddedNodes and handleRemovedNodes for improved mutation tracking. ([b91f38f](https://github.com/CoCreate-app/CoCreate-observer/commit/b91f38ff65d4359dc216d8e2e378067525e4b721))
+
 ## [1.8.19](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.8.18...v1.8.19) (2023-06-14)
 
 
