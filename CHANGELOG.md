@@ -1,3 +1,12 @@
+## [1.10.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.10.0...v1.10.1) (2023-08-21)
+
+
+### Bug Fixes
+
+* /dist/CoCreate.js updated to https://CoCreate.app/dist/CoCreate.js ([0bcc6d1](https://github.com/CoCreate-app/CoCreate-observer/commit/0bcc6d1191152b42a72e7af3be29816aa82cf1dd))
+* replace cdn with /dist ([9b1a543](https://github.com/CoCreate-app/CoCreate-observer/commit/9b1a543d49a08229aa8320ff4b6e4e1e20ede675))
+* update file uploader ([3162f4a](https://github.com/CoCreate-app/CoCreate-observer/commit/3162f4aa0f162b71db4d6bc358750708071609c4))
+
 # [1.10.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.9.0...v1.10.0) (2023-08-17)
 
 
