@@ -1,3 +1,11 @@
+## [1.11.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.11.1...v1.11.2) (2023-09-18)
+
+
+### Bug Fixes
+
+*  Add path and pathname ([9139089](https://github.com/CoCreate-app/CoCreate-observer/commit/91390892fd3e72e2ef3d6cd470d9bc0c178be1b7))
+* Update dCoCreate dpendencies to latest versions ([162dff2](https://github.com/CoCreate-app/CoCreate-observer/commit/162dff2261875234da463f431c95ad49338259b6))
+
 ## [1.11.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.11.0...v1.11.1) (2023-08-21)
 
 
