@@ -8,17 +8,16 @@ module.exports = {
             "object": {
                 "_id": "602079ba3c260207bf49cab6",
                 "name": "index.html",
-                "path": "/docs/observer/index.html",
+                "path": "/docs/observer",
+                "pathname": "/docs/observer/index.html",
                 "src": "{{./docs/index.html}}",
                 "host": [
                     "*",
                     "general.cocreate.app"
                 ],
-                "directory": "/docs/observer",
-                "parentDirectory": "{{parentDirectory}}",
+                "directory": "observer",
                 "content-type": "{{content-type}}",
-                "public": "true",
-                "website_id": "644d4bff8036fb9d1d1fd69c"
+                "public": "true"
             }
         }
     ]
