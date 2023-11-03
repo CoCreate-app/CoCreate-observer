@@ -1,3 +1,11 @@
+## [1.11.8](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.11.7...v1.11.8) (2023-11-03)
+
+
+### Bug Fixes
+
+* favicon.ico path ([d6acbe7](https://github.com/CoCreate-app/CoCreate-observer/commit/d6acbe785cfc9e41f73c1769bece6bca86b8bb80))
+* update dependencies to the lates versions ([75e1c5f](https://github.com/CoCreate-app/CoCreate-observer/commit/75e1c5f82105db0458ac10247157df0df7797c78))
+
 ## [1.11.7](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.11.6...v1.11.7) (2023-10-25)
 
 
