@@ -1,3 +1,11 @@
+## [1.11.9](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.11.8...v1.11.9) (2023-11-09)
+
+
+### Bug Fixes
+
+* meta name typo ([5919625](https://github.com/CoCreate-app/CoCreate-observer/commit/59196257e14817724f1b34105a56c157328a3527))
+* update host ([4f0a3a0](https://github.com/CoCreate-app/CoCreate-observer/commit/4f0a3a0fe39751bace6af827f8ec2844695b3338))
+
 ## [1.11.8](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.11.7...v1.11.8) (2023-11-03)
 
 
