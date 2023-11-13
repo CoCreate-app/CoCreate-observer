@@ -388,7 +388,12 @@ observer.prototype.runCallbacks = function runCallbacks(callbacks, mutation) {
                 callback(mutation);
                 benchmarker.start('mutation')
             }
-            else if (callbackType === "query" && mutation.target.matches(selector)) {
+            else if (callbackType === "query") {
+                if (selector.endsWith('[]')) {
+                    if (!mutation.target.matches(selector.slice(0, -2)))
+                        continue
+                } else if (!mutation.target.matches(selector))
+                    continue
                 benchmarker.stop('mutation')
                 callback(mutation);
                 benchmarker.start('mutation')
@@ -442,7 +447,11 @@ observer.prototype.handleChildList = function handleChildList(mutation) {
 
             let matchedEl = [];
             for (let el of elements) {
-                if (el.matches(selector)) matchedEl.push(el);
+                if (selector.endsWith('[]')) {
+                    if (el.matches(selector.slice(0, -2)))
+                        matchedEl.push(el)
+                } else if (el.matches(selector))
+                    matchedEl.push(el);
             }
             if (matchedEl.length) {
                 benchmarker.stop('mutation')
