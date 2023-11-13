@@ -378,19 +378,21 @@ observer.prototype.handleAttributes = function handleAttributes(mutation) {
 observer.prototype.runCallbacks = function runCallbacks(callbacks, mutation) {
     for (let name of Object.keys(callbacks)) {
         let callbackType = callbacks[name]
-        let {
-            callback,
-            selector
-        } = callbackList[name];
-        if (callbackType === "callback") {
-            benchmarker.stop('mutation')
-            callback(mutation);
-            benchmarker.start('mutation')
-        }
-        else if (callbackType === "query" && mutation.target.matches(selector)) {
-            benchmarker.stop('mutation')
-            callback(mutation);
-            benchmarker.start('mutation')
+        if (callbackList[name]) {
+            let {
+                callback,
+                selector
+            } = callbackList[name];
+            if (callbackType === "callback") {
+                benchmarker.stop('mutation')
+                callback(mutation);
+                benchmarker.start('mutation')
+            }
+            else if (callbackType === "query" && mutation.target.matches(selector)) {
+                benchmarker.stop('mutation')
+                callback(mutation);
+                benchmarker.start('mutation')
+            }
         }
     }
 };
