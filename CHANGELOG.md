@@ -1,3 +1,15 @@
+# [1.12.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.11.10...v1.12.0) (2023-11-16)
+
+
+### Bug Fixes
+
+* callbacklist condition ([68be1f6](https://github.com/CoCreate-app/CoCreate-observer/commit/68be1f6398ce59cb70b26f1537fb75f874201ddf))
+
+
+### Features
+
+* support special selectors that end in [] ([ff24e72](https://github.com/CoCreate-app/CoCreate-observer/commit/ff24e72781d0f27bcfae31c043cdc591cdf39ec1))
+
 ## [1.11.10](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.11.9...v1.11.10) (2023-11-12)
 
 
