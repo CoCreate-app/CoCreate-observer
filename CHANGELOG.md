@@ -1,3 +1,15 @@
+# [1.14.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.13.0...v1.14.0) (2023-11-25)
+
+
+### Bug Fixes
+
+* update nav, edit button and css path ([91813a7](https://github.com/CoCreate-app/CoCreate-observer/commit/91813a7bf5e7ad34255104a1b8091eb2a3d7a0b0))
+
+
+### Features
+
+* upgrade dependencies for latest features and fixes ([968a490](https://github.com/CoCreate-app/CoCreate-observer/commit/968a4901f77dba5714293ffac5f9067456ff092f))
+
 # [1.13.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.12.0...v1.13.0) (2023-11-19)
 
 
