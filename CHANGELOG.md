@@ -1,3 +1,15 @@
+# [1.15.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.14.0...v1.15.0) (2023-11-25)
+
+
+### Bug Fixes
+
+* update licensing details ([0366577](https://github.com/CoCreate-app/CoCreate-observer/commit/0366577c17157aefc66f699d94bcd1c1423fdfe0))
+
+
+### Features
+
+* upgrade dependencies for latest features and fixes ([3aca441](https://github.com/CoCreate-app/CoCreate-observer/commit/3aca4416081fa8728184dcb50ca9400601fb47dc))
+
 # [1.14.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.13.0...v1.14.0) (2023-11-25)
 
 
