@@ -1,3 +1,11 @@
+## [1.16.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.16.1...v1.16.2) (2024-06-12)
+
+
+### Bug Fixes
+
+* bump cocreate dependencies ([04b89d5](https://github.com/CoCreate-app/CoCreate-observer/commit/04b89d51f4a5083eeea29aedeb8ab7e98a45679d))
+* svg icon class ([7272452](https://github.com/CoCreate-app/CoCreate-observer/commit/7272452bf7da24116fbe6e8c75059ace355d5300))
+
 ## [1.16.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.16.0...v1.16.1) (2024-04-29)
 
 
