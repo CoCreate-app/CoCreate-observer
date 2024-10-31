@@ -21,7 +21,7 @@ import observer from "../src/index";
 // observer.init({
 //     name: 'Test Attribute',
 //     observe: ['attributes'],
-//     target: 'div.el',
+//   selector: 'div.el',
 //     callback: function(mutation) {
 //         console.log('div.el observed', mutation)
 //     },
@@ -31,7 +31,7 @@ import observer from "../src/index";
 //     name: 'Test Attribute',
 //     observe: ['attributes'],
 //     attributeFilter: ['ba'],
-//     target: 'div.el',
+//   selector: 'div.el',
 //     callback: function(mutation) {
 //         console.log('div.el with attribute ba observed', mutation)
 //     },
@@ -48,7 +48,7 @@ import observer from "../src/index";
 // observer.init({
 //     name: 'Test Attribute',
 //     observe: ['characterData'],
-//     target: 'div.el',
+//   selector: 'div.el',
 //     callback: function(mutation) {
 //         console.log('characterDat with div.el observed', mutation)
 //     },
@@ -65,42 +65,42 @@ import observer from "../src/index";
 // observer.init({
 //   name: "Test Attribute",
 //   observe: ["childList"],
-//   target: "div.el",
+// selector: "div.el",
 //   callback: function (mutation) {
 //     console.log("childList div.el observed", mutation);
 //   },
 // });
 
 observer.init({
-  name: "Test Attribute",
-  observe: ["addedNodes"],
-  callback: function (mutation) {
-    console.log("addedNodes observed", mutation);
-  },
+    name: "Test Attribute",
+    observe: ["addedNodes"],
+    callback: function (mutation) {
+        console.log("addedNodes observed", mutation);
+    },
 });
 
 observer.init({
-  name: "Test Attribute",
-  observe: ["addedNodes"],
-  target: "div.el",
-  callback: function (mutation) {
-    console.log("addedNodes  div.el observed", mutation);
-  },
+    name: "Test Attribute",
+    observe: ["addedNodes"],
+    selector: "div.el",
+    callback: function (mutation) {
+        console.log("addedNodes  div.el observed", mutation);
+    },
 });
 
 observer.init({
-  name: "Test Attribute",
-  observe: ["removedNodes"],
-  callback: function (mutation) {
-    console.log("removedNodes observed", mutation);
-  },
+    name: "Test Attribute",
+    observe: ["removedNodes"],
+    callback: function (mutation) {
+        console.log("removedNodes observed", mutation);
+    },
 });
 
 observer.init({
-  name: "Test Attribute",
-  observe: ["removedNodes"],
-  target: "div.el",
-  callback: function (mutation) {
-    console.log("removedNodes div.el observed", mutation);
-  },
+    name: "Test Attribute",
+    observe: ["removedNodes"],
+    selector: "div.el",
+    callback: function (mutation) {
+        console.log("removedNodes div.el observed", mutation);
+    },
 });
