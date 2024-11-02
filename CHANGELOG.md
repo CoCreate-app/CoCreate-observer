@@ -1,3 +1,12 @@
+## [1.16.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.16.4...v1.16.5) (2024-11-02)
+
+
+### Bug Fixes
+
+* fetch array renamed to array ([1448c98](https://github.com/CoCreate-app/CoCreate-observer/commit/1448c98c76f21aede23c0f17ed47b2e63c642acf))
+* observer taget has been renamed to selector ([9d27f28](https://github.com/CoCreate-app/CoCreate-observer/commit/9d27f2853606874cf8e71e09fb29816e6675bf6f))
+* observer taget has been renamed to selector ([c8583bb](https://github.com/CoCreate-app/CoCreate-observer/commit/c8583bbe288d51d93df95f4caa86d20bee1d4ada))
+
 ## [1.16.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.16.3...v1.16.4) (2024-06-23)
 
 
