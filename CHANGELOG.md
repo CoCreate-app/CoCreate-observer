@@ -1,3 +1,16 @@
+# [1.17.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.16.5...v1.17.0) (2024-11-04)
+
+
+### Bug Fixes
+
+* pretier.config.js and file formating ([d9d97ea](https://github.com/CoCreate-app/CoCreate-observer/commit/d9d97eabbf03f83175cbb1f3c6084daefd701fb9))
+
+
+### Features
+
+* add prettier.config.js and format files ([2c5d1cb](https://github.com/CoCreate-app/CoCreate-observer/commit/2c5d1cb8d17cc51f7069814bbd7472316f92974a))
+* add prettier.config.js and format files ([f0763f8](https://github.com/CoCreate-app/CoCreate-observer/commit/f0763f8f4915219e2e9e85323e8d7ea38134bd6f))
+
 ## [1.16.5](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.16.4...v1.16.5) (2024-11-02)
 
 
