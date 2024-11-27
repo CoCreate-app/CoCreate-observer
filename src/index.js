@@ -61,7 +61,7 @@ function observer(doc) {
 		childList: true, // observes when elements are added and removed
 		attributes: true, // observers all children and children of children
 		attributeOldValue: true,
-		characterData: true, // observes inntext change
+		characterData: true, // observes innerText change
 		characterDataOldValue: true
 	});
 }
