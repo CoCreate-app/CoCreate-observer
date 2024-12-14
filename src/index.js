@@ -83,7 +83,7 @@ observer.prototype.init = function init({
 	name
 }) {
 	if (!observe || !observe.every((i) => validObserve.includes(i)))
-		throw "please enter a valid observe";
+		return console.error("please enter a valid observe");
 
 	for (let observeType of observe) {
 		switch (observeType) {
