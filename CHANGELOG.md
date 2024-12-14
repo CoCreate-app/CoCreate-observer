@@ -1,3 +1,12 @@
+## [1.17.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.17.0...v1.17.1) (2024-12-14)
+
+
+### Bug Fixes
+
+* comment innerText ([6180813](https://github.com/CoCreate-app/CoCreate-observer/commit/6180813f0830bc55de03e0c8332cd051d65165e4))
+* formating ([cdd899d](https://github.com/CoCreate-app/CoCreate-observer/commit/cdd899d25e6e222e21a551958ab1fd8fd620df33))
+* return console.error ([c5f842d](https://github.com/CoCreate-app/CoCreate-observer/commit/c5f842d50ce88fef8cf7b21b709bbbe06cb17928))
+
 # [1.17.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.16.5...v1.17.0) (2024-11-04)
 
 
