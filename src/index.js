@@ -1,525 +1,491 @@
-// TODO: run for all mutaitonList addedNodes and removed nodes match with this.mapCallback
-// we should keep a binary list of attributes to do fast search and avoid a lot of querySelectorAll
-import parseSelector from "./parseSelector";
-let benchmarker = require("./bench");
-let dummyEl = document.createElement("div");
-
-let idName = "cbId";
-let i = 0;
-
 function observer(doc) {
-	this.callbackList = {};
-
-	this.childListTarget = {
-		tagName: {},
-		id: {},
-		attribute: {},
-		class: {},
-		undefinedSelector: {}
+	this.index = 0;
+	this.configs = new Map();
+	this.configByName = new Map();
+	this.childList = {
+		undefined: [],
+		complexSelectors: new Map(),
+		tagName: new Map(),
+		id: new Map(),
+		class: new Map(),
+		attribute: new Map()
 	};
-
-	this.characterTarget = {
-		tagName: {},
-		id: {},
-		attribute: {},
-		class: {},
-		undefinedSelector: {}
+	this.addedNodes = {
+		undefined: [],
+		complexSelectors: new Map(),
+		tagName: new Map(),
+		id: new Map(),
+		class: new Map(),
+		attribute: new Map()
 	};
-
-	this.attributesTarget = {
-		undefinedAttribute: {
-			tagName: {},
-			id: {},
-			attribute: {},
-			class: {},
-			undefinedSelector: {}
-		}
+	this.removedNodes = {
+		undefined: [],
+		complexSelectors: new Map(),
+		tagName: new Map(),
+		id: new Map(),
+		class: new Map(),
+		attribute: new Map()
 	};
-
-	this.addedNodesTarget = {
-		tagName: {},
-		id: {},
-		attribute: {},
-		class: {},
-		undefinedSelector: {}
+	this.attributes = {
+		undefined: [],
+		complexSelectors: new Map(),
+		tagName: new Map(),
+		id: new Map(),
+		class: new Map(),
+		attribute: new Map(),
+		attributeFilter: new Map()
 	};
-
-	this.removedNodesTarget = {
-		tagName: {},
-		id: {},
-		attribute: {},
-		class: {},
-		undefinedSelector: {}
+	this.characterData = {
+		undefined: [],
+		complexSelectors: new Map(),
+		tagName: new Map(),
+		id: new Map(),
+		class: new Map(),
+		attribute: new Map()
 	};
+	this.unInintNames = new Set();
 
 	const observer = new MutationObserver((mutationsList) =>
-		this._callback.call(this, mutationsList)
+		this.processMutations(mutationsList)
 	);
 
 	observer.observe(doc, {
-		subtree: true, // observers all children and children of children
-		childList: true, // observes when elements are added and removed
-		attributes: true, // observers all children and children of children
+		subtree: true,
+		childList: true,
+		attributes: true,
 		attributeOldValue: true,
-		characterData: true, // observes innerText change
+		characterData: true,
 		characterDataOldValue: true
 	});
 }
 
-const validObserve = [
-	"addedNodes",
-	"removedNodes",
-	"attributes",
-	"characterData",
-	"childList"
-];
-
-observer.prototype.init = function init({
-	observe,
-	attributeName,
-	target,
-	selector,
-	callback,
-	name
-}) {
-	if (!observe || !observe.every((i) => validObserve.includes(i)))
-		return console.error("please enter a valid observe");
-
-	for (let observeType of observe) {
-		switch (observeType) {
-			case "attributes":
-				if (attributeName) {
-					for (let att of attributeName) {
-						if (!this.attributesTarget[att])
-							this.attributesTarget[att] = {
-								tagName: {},
-								id: {},
-								attribute: {},
-								class: {},
-								undefinedSelector: {}
-							};
-
-						this.registerObserve(
-							name,
-							this.attributesTarget[att],
-							selector,
-							callback
-						);
-					}
-				} else
-					this.registerObserve(
-						name,
-						this.attributesTarget["undefinedAttribute"],
-						selector,
-						callback
-					);
-				break;
-			case "childList":
-				this.registerObserve(
-					name,
-					this.childListTarget,
-					selector,
-					callback
-				);
-				break;
-
-			case "addedNodes":
-				this.registerObserve(
-					name,
-					this.addedNodesTarget,
-					selector,
-					callback
-				);
-				break;
-			case "removedNodes":
-				this.registerObserve(
-					name,
-					this.removedNodesTarget,
-					selector,
-					callback
-				);
-				break;
-			case "characterData":
-				this.registerObserve(
-					name,
-					this.characterTarget,
-					selector,
-					callback
-				);
-				break;
-
-			default:
-				break;
-		}
+/**
+ * Initializes the observer with the provided configuration(s).
+ *
+ * @param {object|object[]} config - The configuration object or an array of configuration objects.
+ * @param {string} config.name - The name of the observer.
+ * @param {string|string[]} config.types - The MutationObserver type(s) to observe (e.g., 'childList', 'attributes').
+ * @param {string[]} config.attributeFilter - The attributes to observe (only used for 'attributes' mutations).
+ * @param {string} config.selector - The CSS selector to target elements.
+ * @param {function} config.callback - The callback function to execute when mutations occur.
+ * @returns {void}
+ */
+observer.prototype.init = function (config) {
+	if (!Array.isArray(config)) {
+		config = [config];
 	}
-};
 
-observer.prototype.registerObserve = function registerObserve(
-	name,
-	containerTarget,
-	selector,
-	callback
-) {
-	if (selector) {
-		let selectors = [];
-		if (selector.includes("(")) {
-			let selectorArray = selector.split("),").map((i) => i.trim());
-			for (let i = 0; i < selectorArray.length; i++) {
-				let select = selectorArray[i].split("(").map((i) => i.trim());
-				if (select.length > 1) {
-					let sel = select[0].split(",").map((i) => i.trim());
-					if (sel.length > 1) {
-						let lastItem = sel.pop();
-						lastItem = lastItem + "(" + select[1];
-						selectors.push(...sel, lastItem);
-					} else {
-						let test = sel[0] + "(" + select[1];
-						selectors.push(test);
-					}
-				}
-			}
-		} else selectors = selector.split(",").map((i) => i.trim());
+	for (const conf of config) {
+		if (!conf.types || !conf.types.length || !conf.callback) {
+			console.error(
+				"Invalid observer configuration: Missing types or callback."
+			);
+			return;
+		}
 
-		if (
-			selectors.every((sel) => {
-				try {
-					dummyEl.querySelector(sel);
-					return true;
-				} catch (err) {
-					return false;
-				}
-			})
-		) {
-			for (let sel of selectors) {
-				let callbackId = idName + ++i;
-				this.callbackList[callbackId] = {
-					selector: sel,
-					callback,
-					name
-				};
+		conf.id = "cbId" + ++this.index;
 
-				register(containerTarget, sel, callbackId);
-			}
+		if (!Array.isArray(conf.types)) {
+			conf.types = [conf.types];
+		}
+
+		this.configs.set(conf.id, conf);
+		if (conf.name) {
+			this.configByName.set(conf.name, conf);
+		}
+
+		if (conf.selector) {
+			conf.generatedIds = [];
+			this.parseSelector(conf);
 		} else {
-			let callbackId = idName + ++i;
-			this.callbackList[callbackId] = {
-				selector,
-				callback,
-				name
-			};
-			register(containerTarget, selector, callbackId);
+			conf.types.forEach((type) => {
+				this[type].undefined.push(conf);
+			});
 		}
-	} else {
-		let callbackId = idName + ++i;
-		this.callbackList[callbackId] = {
-			callback,
-			name
-		};
 
-		Object.assign(containerTarget.undefinedSelector, {
-			[callbackId]: "callback"
-		});
+		if (conf.types.includes("attributes")) {
+			let attributeFilter = conf.attributeFilter;
+			if (!attributeFilter && !attributeFilter.length) {
+				attributeFilter = [""];
+			}
+
+			let targetMap = this.attributes.attributeFilter;
+			for (let i = 0; i < attributeFilter.length; i++) {
+				const attributeName = attributeFilter[i];
+				if (!targetMap.has(attributeName)) {
+					targetMap.set(attributeName, [conf.id]);
+				} else {
+					targetMap.get(attributeName).push(conf.id);
+				}
+			}
+		}
 	}
 };
 
-function register(containerTarget, selector, callbackId) {
-	let parsedSelectors = parseSelector(selector);
-	if (!parsedSelectors)
-		return Object.assign(containerTarget.undefinedSelector, {
-			[callbackId]: "query"
-		});
+observer.prototype.parseSelector = function (config) {
+	let complexSelector = "";
+	let compoundSelectors = [];
 
-	let value =
-		parsedSelectors.length <= 1
-			? {
-					[callbackId]: "callback"
-			  }
-			: {
-					[callbackId]: "query"
-			  };
+	let selectorIncrement = 0;
+	const selectors = config.selector.split(/,(?![^(]*\))/g);
+	for (let selector of selectors) {
+		selector = selector.trim();
+		const parts = [];
+		// if (selector.endsWith("[]"))//
+		// if (!mutation.target.matches(selector.slice(0, -2)))
 
-	for (let chunkName of parsedSelectors) {
-		chunkName.value = chunkName.value || "*";
+		if (this.isComplexSelector(selector)) {
+			// Store for matches() handling
+			complexSelector += selector + ",";
+		} else {
+			// Parse compound selector
+			const regex = /^(\w+)?(#[\w-]+)?((?:\.[\w-]+)*)(\[[^\]]+\])?$/;
+			const match = regex.exec(selector);
 
-		createOrAttach(
-			containerTarget[chunkName.type],
-			chunkName.name,
-			chunkName.type === "attribute"
-				? {
-						[chunkName.value]: {
-							...value
-						}
-				  }
-				: value
-		);
-	}
-}
+			if (!match) {
+				parts.push({ type: "tagName", name: selector });
+			} else {
+				if (match[1]) {
+					parts.push({ type: "tagName", name: match[1] });
+				}
 
-function removeCallback(obj, id, parent, key) {
-	if (obj[id]) {
-		delete obj[id];
-		if (parent && Object.keys(obj).length === 0) {
-			if (key !== "undefinedSelector") delete parent[key];
+				if (match[2]) {
+					parts.push({ type: "id", name: match[2].substring(1) });
+				}
+
+				if (match[3]) {
+					const classStrings = match[3].split(".");
+					for (let i = 1; i < classStrings.length; i++) {
+						parts.push({
+							type: "class",
+							name: classStrings[i]
+						});
+					}
+				}
+				if (match[4]) {
+					const attributeStrings = match[4].split("[");
+					for (let i = 1; i < attributeStrings.length; i++) {
+						parts.push({
+							type: "attribute",
+							name: attributeStrings[i].substring(
+								0,
+								attributeStrings[i].length - 1
+							)
+						});
+					}
+				}
+			}
+			const generatedId = `${selectorIncrement++}-${config.id}-${
+				parts.length
+			}`;
+
+			config.generatedIds.push(generatedId);
+			compoundSelectors.push({ generatedId, parts });
 		}
 	}
-	for (let key of Object.keys(obj)) {
-		let value = obj[key];
-		if (value.constructor.name == "Object")
-			removeCallback(value, id, obj, key);
-	}
-}
 
-observer.prototype.uninit = function uninit(callback) {
-	let callbackId;
-	for (let key of Object.keys(this.callbackList)) {
-		let value = this.callbackList[key];
-		if (value.callback === callback) {
-			callbackId = key;
-			break;
+	for (const observerType of config.types) {
+		let targetMap = this[observerType];
+
+		if (complexSelector) {
+			const selectorString = complexSelector.slice(0, -1);
+			if (!targetMap.complexSelectors.has(selectorString)) {
+				targetMap.complexSelectors.set(selectorString, [config.id]);
+			} else {
+				targetMap.complexSelectors.get(selectorString).push(config.id);
+			}
+		}
+
+		for (let compoundSelector of compoundSelectors) {
+			let generatedId = compoundSelector.generatedId;
+			let parts = compoundSelector.parts;
+			for (let part of parts) {
+				if (!targetMap[part.type].has(part.name)) {
+					targetMap[part.type].set(part.name, [generatedId]);
+				} else {
+					targetMap[part.type].get(part.name).push(generatedId);
+				}
+			}
 		}
 	}
-	if (callbackId) {
-		let allCallbacks = {
-			childListTarget: this.childListTarget,
-			characterTarget: this.characterTarget,
-			attributesTarget: this.attributesTarget,
-			addedNodesTarget: this.addedNodesTarget,
-			removedNodesTarget: this.removedNodesTarget
-		};
-		removeCallback(allCallbacks, callbackId);
-		delete this.callbackList[callbackId];
-	}
-	// unattach callback parent if callback.length == 0
 };
 
-observer.prototype._callback = function _callback(mutationsList) {
-	for (let mutation of mutationsList) {
-		benchmarker.start("mutation", mutation);
+observer.prototype.isComplexSelector = function (selector) {
+	const combinedRegex = /[\s>~+:](?![^\[]*\])|\[[^\]]*[~|^$*]=/g;
+	return combinedRegex.test(selector);
+};
 
+observer.prototype.processMutations = function (mutationsList) {
+	const createMutation = (node, mutation, type) => {
+		return {
+			type: type,
+			target: node,
+			mutationOrigin: mutation.target,
+			parentElement: node.parentElement,
+			previousSibling: node.previousSibling,
+			nextSibling: node.nextSibling
+		};
+	};
+
+	for (const mutation of mutationsList) {
 		switch (mutation.type) {
 			case "childList":
-				this.handleChildList(mutation);
-				this.handleAddedNodes(mutation);
-				this.handleRemovedNodes(mutation);
+				this.executeCallbacks(mutation);
+				if (mutation.addedNodes.length > 0) {
+					for (const addedNode of mutation.addedNodes) {
+						if (addedNode instanceof Element) {
+							let mutationObject = createMutation(
+								addedNode,
+								mutation,
+								"addedNodes"
+							);
+
+							let movedFrom = addedNode.movedFrom;
+							if (movedFrom) {
+								delete addedNode.movedFrom;
+								mutationObject.movedFrom = movedFrom;
+							}
+							this.everyElement(addedNode, (el) => {
+								this.executeCallbacks(
+									createMutation(el, mutation, "addedNodes")
+								);
+							});
+						}
+					}
+				}
+				if (mutation.removedNodes.length > 0) {
+					let movedFrom = {
+						parentElement: mutation.target,
+						previousSibling: mutation.previousSibling,
+						nextSibling: mutation.nextSibling
+					};
+					for (const removedNode of mutation.removedNodes) {
+						if (removedNode instanceof Element) {
+							removedNode.movedFrom = movedFrom;
+							this.everyElement(removedNode, (el) => {
+								this.executeCallbacks(
+									createMutation(el, mutation, "removedNodes")
+								);
+							});
+						}
+					}
+				}
 				break;
 			case "attributes":
-				this.handleAttributes(mutation);
-				break;
 			case "characterData":
-				this.handleCharacterData(mutation);
+				this.executeCallbacks(mutation);
 				break;
-		}
-		benchmarker.stop("mutation");
-	}
-};
-
-observer.prototype.handleAddedNodes = function handleAddedNodes(mutation) {
-	for (let addedNode of mutation.addedNodes) {
-		if (!addedNode.tagName) continue;
-		this.everyElement(addedNode, (el) => {
-			let movedFrom = el.movedFrom;
-			if (movedFrom) {
-				delete el.movedFrom;
-			}
-
-			let callbacks = runMutations(this.addedNodesTarget, el);
-			this.runCallbacks(callbacks, {
-				target: el,
-				type: "addedNodes",
-				parentElement: mutation.target,
-				previousSibling: mutation.previousSibling,
-				nextSibling: mutation.nextSibling,
-				movedFrom
-			});
-		});
-	}
-};
-
-observer.prototype.handleRemovedNodes = function handleRemovedNodes(mutation) {
-	for (let removedNode of mutation.removedNodes) {
-		if (!removedNode.tagName) continue;
-		this.everyElement(removedNode, (el) => {
-			if (el.parentElement)
-				el.movedFrom = {
-					parentElement: mutation.target,
-					previousSibling: mutation.previousSibling,
-					nextSibling: mutation.nextSibling
-				};
-
-			let callbacks = runMutations(this.removedNodesTarget, el);
-			this.runCallbacks(callbacks, {
-				target: el,
-				type: "removedNodes",
-				parentElement: mutation.target,
-				previousSibling: mutation.previousSibling,
-				nextSibling: mutation.nextSibling
-			});
-		});
-	}
-};
-
-observer.prototype.handleAttributes = function handleAttributes(mutation) {
-	let container = this.attributesTarget[mutation.attributeName];
-	if (container) {
-		let callbacks = runMutations(container, mutation.target);
-		this.runCallbacks(callbacks, mutation);
-	}
-
-	container = this.attributesTarget["undefinedAttribute"];
-	if (container) {
-		let callbacks = runMutations(container, mutation.target);
-		this.runCallbacks(callbacks, mutation);
-	}
-};
-
-observer.prototype.runCallbacks = function runCallbacks(callbacks, mutation) {
-	for (let name of Object.keys(callbacks)) {
-		let callbackType = callbacks[name];
-		if (this.callbackList[name]) {
-			let { callback, selector } = this.callbackList[name];
-			if (callbackType === "callback") {
-				benchmarker.stop("mutation");
-				callback(mutation);
-				benchmarker.start("mutation");
-			} else if (callbackType === "query") {
-				if (selector.endsWith("[]")) {
-					if (!mutation.target.matches(selector.slice(0, -2)))
-						continue;
-				} else if (!mutation.target.matches(selector)) continue;
-				benchmarker.stop("mutation");
-				callback(mutation);
-				benchmarker.start("mutation");
-			}
-		}
-	}
-};
-
-observer.prototype.handleCharacterData = function handleCharacterData(
-	mutation
-) {
-	let callbacks = runMutations(
-		this.characterTarget,
-		mutation.target.parentElement
-	);
-
-	this.runCallbacks(callbacks, mutation);
-};
-
-observer.prototype.handleChildList = function handleChildList(mutation) {
-	let addCallbacks = {};
-	for (let addedNode of mutation.addedNodes) {
-		if (!addedNode.tagName) continue;
-		this.everyElement(addedNode, (el) => {
-			let callbacks = runMutations(this.childListTarget, el);
-			for (let cbName of Object.keys(callbacks)) {
-				let callbackType = callbacks[cbName];
-				createOrAttach(addCallbacks, cbName, {});
-				addCallbacks[cbName]["callbackType"] = callbackType;
-				createOrPush(addCallbacks[cbName], "elements", el);
-			}
-		});
-	}
-
-	for (let cbName of Object.keys(addCallbacks)) {
-		let prop = addCallbacks[cbName];
-		let { callbackType, elements } = prop;
-		if (!this.callbackList[cbName]) continue;
-		let func = this.callbackList[cbName].callback;
-		if (callbackType === "callback") {
-			benchmarker.stop("mutation");
-			func({
-				target: mutation.target,
-				type: "childList",
-				addedNodes: elements
-			});
-			benchmarker.start("mutation");
-		} else if (callbackType === "query") {
-			let selector = this.callbackList[cbName].selector;
-
-			let matchedEl = [];
-			for (let el of elements) {
-				if (selector.endsWith("[]")) {
-					if (el.matches(selector.slice(0, -2))) matchedEl.push(el);
-				} else if (el.matches(selector)) matchedEl.push(el);
-			}
-			if (matchedEl.length) {
-				benchmarker.stop("mutation");
-
-				func({
-					target: mutation.target,
-					type: "childList",
-					addedNodes: matchedEl
-				});
-				benchmarker.start("mutation");
-			}
 		}
 	}
 };
 
 observer.prototype.everyElement = function everyElement(el, callback) {
-	callback(el);
+	const stack = [el];
 
-	if (el.children.length)
-		for (let node of el.children) this.everyElement(node, callback);
+	while (stack.length > 0) {
+		const currentNode = stack.pop();
+
+		callback(currentNode);
+
+		if (currentNode.children.length) {
+			const children = currentNode.children;
+			for (let i = children.length - 1; i >= 0; i--) {
+				stack.push(children[i]);
+			}
+		}
+	}
 };
 
-function createOrAttach(obj, name, value) {
-	if (obj[name]) Object.assign(obj[name], value);
-	else obj[name] = value;
-}
-
-function createOrPush(obj, name, value) {
-	if (obj[name]) obj[name].push(value);
-	else obj[name] = [value];
-}
-
-function runMutations(containerTarget, el) {
-	let list = [{}];
-
-	list.push(containerTarget.undefinedSelector);
-
-	let id = el.id;
-	if (containerTarget.id[id]) list.push(containerTarget.id[id]);
-
-	if (containerTarget.tagName[el.tagName])
-		list.push(containerTarget.tagName[el.tagName]);
-
-	for (let att of el.attributes) {
-		let attrName = att.name,
-			value = att.value;
-		if (
-			containerTarget.attribute[attrName] &&
-			containerTarget.attribute[attrName][value]
-		)
-			list.push(containerTarget.attribute[attrName][value]);
-		if (
-			containerTarget.attribute[attrName] &&
-			containerTarget.attribute[attrName]["*"]
-		)
-			list.push(containerTarget.attribute[attrName]["*"]);
+observer.prototype.executeCallbacks = function (mutation) {
+	let target = mutation.target; //
+	if (target && target.nodeType !== Node.ELEMENT_NODE) {
+		target = target.parentElement;
+		if (target && target.nodeType !== Node.ELEMENT_NODE) {
+			return;
+		}
 	}
 
-	for (let c of el.classList) {
-		if (containerTarget.class[c]) list.push(containerTarget.class[c]);
+	const targetMap = this[mutation.type];
+	const tag = target.tagName && target.tagName.toLowerCase();
+	const id = target.id;
+	const classes = target.classList;
+	const attributes = target.attributes;
+	const attributeCallbackIds = [];
+
+	if (mutation.type === "attributes") {
+		attributeCallbackIds.push(
+			...new Set([
+				...(targetMap.attributeFilter.get(mutation.attributeName) ||
+					[]),
+				...(targetMap.attributeFilter.get("") || [])
+			])
+		);
+		if (!attributeCallbackIds.length) {
+			return;
+		}
 	}
 
-	return Object.assign.apply(Object, list);
-}
+	const matchingCallbackIds = [];
 
-observer.prototype.setInitialized = function (element, type) {
-	// element.setAttribute(`initialized_${type}`, "true");
-	type = type || "";
-	let key = "co_initialized_" + type;
-	element[key] = true;
+	// Collect matching callback IDs.
+	if (tag && targetMap.tagName.has(tag)) {
+		matchingCallbackIds.push(...targetMap.tagName.get(tag));
+	}
+	if (id && targetMap.id.has(id)) {
+		matchingCallbackIds.push(...targetMap.id.get(id));
+	}
+
+	if (classes) {
+		for (const className of classes) {
+			if (targetMap.class.has(className)) {
+				matchingCallbackIds.push(...targetMap.class.get(className));
+			}
+		}
+	}
+
+	if (attributes) {
+		for (const attr of Array.from(attributes)) {
+			const attrStringName = attr.name;
+			const attrStringNameValue = `${attr.name}="${attr.value}"`;
+
+			if (targetMap.attribute.has(attrStringName)) {
+				matchingCallbackIds.push(
+					...targetMap.attribute.get(attrStringName)
+				);
+			}
+			if (targetMap.attribute.has(attrStringNameValue)) {
+				matchingCallbackIds.push(
+					...targetMap.attribute.get(attrStringNameValue)
+				);
+			}
+		}
+	}
+
+	const executedConfigIds = new Set(); // Track executed config IDs
+
+	// Execute callbacks for 'undefined' selectors (Fastest)
+	const undefinedConfigs = targetMap.undefined; //
+	if (undefinedConfigs) {
+		for (const config of undefinedConfigs) {
+			if (
+				mutation.type === "attributes" &&
+				attributeCallbackIds.includes(config.id)
+			) {
+				executedConfigIds.add(config.id);
+				config.callback(mutation);
+			}
+		}
+	}
+
+	const callbackCounts = {};
+
+	// Count callback occurrences
+	for (const matchingCallbackId of matchingCallbackIds) {
+		callbackCounts[matchingCallbackId] =
+			(callbackCounts[matchingCallbackId] || 0) + 1;
+	}
+
+	// Execute callbacks for selector-based matches (Medium)
+	for (const id in callbackCounts) {
+		const idParts = id.split("-");
+		if (executedConfigIds.has(idParts[1])) {
+			continue;
+		}
+
+		const partsCount = parseInt(idParts[2]);
+		if (callbackCounts[id] === partsCount) {
+			const config = this.configs.get(idParts[1]);
+			if (config) {
+				executedConfigIds.add(config.id);
+				config.callback(mutation);
+			}
+		}
+	}
+
+	// Execute callbacks for complex selectors (Slowest)
+	const complexSelectors = targetMap.complexSelectors;
+	if (complexSelectors) {
+		for (const [selector, configIds] of complexSelectors) {
+			for (const configId of configIds) {
+				if (executedConfigIds.has(configId)) {
+					continue;
+				}
+
+				if (target.matches(selector)) {
+					const config = this.configs.get(configId);
+					if (config) {
+						config.callback(mutation);
+					}
+				}
+			}
+		}
+	}
 };
 
-observer.prototype.getInitialized = function (element, type) {
-	type = type || "";
-	let key = "co_initialized_" + type;
-	if (!element[key]) {
-		return false;
-	} else {
-		return true;
+observer.prototype.uninit = function (name) {
+	const config = this.configByName.get(name);
+	if (!config) {
+		return;
+	}
+
+	this.unInintNames.add(name);
+	this.configs.delete(config.id);
+
+	clearTimeout(this.debounceTimer);
+	this.debounceTimer = setTimeout(() => {
+		this.debounceTimer = null;
+		this.removeObserver();
+	}, 1000);
+};
+
+observer.prototype.removeObserver = function () {
+	const namesToRemove = Array.from(this.unInintNames);
+	this.unInintNames.clear();
+
+	for (let observerName of namesToRemove) {
+		let config = this.configByName.get(observerName);
+
+		for (let type of config.types) {
+			let targetMap = this[type];
+			for (let partType of Object.keys(targetMap)) {
+				let selectorMap = targetMap[partType];
+				if (Array.isArray(selectorMap)) {
+					const index = selectorMap.findIndex(
+						(obj) => obj.id === config.id
+					);
+					if (index !== -1) {
+						selectorMap.splice(index, 1);
+					}
+				} else {
+					for (const [key, value] of selectorMap.entries()) {
+						if (
+							partType === "complexSelector" ||
+							partType === "attributeFilter"
+						) {
+							const index = value.indexOf(config.id);
+							if (index !== -1) {
+								value.splice(index, 1);
+								if (value.length === 0) {
+									selectorMap.delete(key);
+								}
+							}
+						} else {
+							for (const generatedId of config.generatedIds ||
+								[]) {
+								const index = value.indexOf(generatedId);
+								if (index !== -1) {
+									value.splice(index, 1);
+									if (value.length === 0) {
+										selectorMap.delete(key);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		this.configByName.delete(observerName);
 	}
 };
 

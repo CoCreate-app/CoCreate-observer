@@ -1,17 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Observer | CoCreateJS</title>
-    </head>
+	<head>
+		<title>Observer | CoCreateJS</title>
+	</head>
 
-    <body>
-        <div he="22">testing observer</div>
-        <div he="22">testing observer</div>
-        <div class="el">testing observer</div>
-        <div aa="22" class="el">testing observer</div>
-        <div bb="33" class="el">testing observer</div>
+	<body>
+		<div he="22">testing observer</div>
+		<div he="22">testing observer</div>
+		<div class="el">testing observer</div>
+		<div aa="22" class="el">testing observer</div>
+		<div bb="33" class="el">testing observer</div>
 
-        <!--<script src="../dist/CoCreate-observer.js"></script>-->
-        <script src="https://CoCreate.app/dist/CoCreate.js"></script>
-    </body>
+		<!--<script src="../dist/CoCreate-observer.js"></script>-->
+		<script src="https://CoCreate.app/dist/CoCreate.js"></script>
+		<script>
+			CoCreate.observer.init({
+				name: "Test Attribute",
+				types: ["attributes"], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
+				attributeFilter: ["aa"],
+				callback: function (mutation) {
+					console.log("attribute observed", mutation);
+				}
+			});
+			CoCreate.observer.init({
+				name: "Test Attribute",
+				types: ["attributes"], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
+				attributeFilter: ["ba"],
+				callback: function (mutation) {
+					console.log("attribute observed", mutation);
+				}
+			});
+
+			CoCreate.observer.init({
+				name: "Test addedNodes",
+				types: ["addedNodes"],
+				attributeFilter: ["bb"],
+				callback: function (mutation) {
+					console.log("addedNodes observed", mutation);
+				}
+			});
+
+			CoCreate.observer.init({
+				name: "Test removedNodes",
+				types: ["removedNodes"], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
+				attributeFilter: ["bb"],
+				callback: function (mutation) {
+					console.log("removedNodes observed", mutation);
+				}
+			});
+
+			CoCreate.observer.init({
+				name: "Test characterData",
+				types: ["characterData"], // , ‘addedNodes’, ‘removedNodes’,’characterData’,
+				attributeFilter: ["bb"],
+				callback: function (mutation) {
+					console.log("characterData observed", mutation);
+				}
+			});
+		</script>
+	</body>
 </html>
