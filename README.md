@@ -15,36 +15,68 @@ Register a components init function & observe selector. The init function will b
 
 For a complete guide and working demo refer to the [doumentation](https://cocreate.app/docs/observer)
 
-## CDN
+# Table of Contents
+
+-   [Table of Contents](#table-of-contents)
+-   [Installation](#installation)
+-   [Code Examples](#examples)
+-   [Parameter Description](#announcements)
+-   [Announcements](#announcements)
+-   [Roadmap](#roadmap)
+-   [Contributing](#contributing)
+-   [About](#about)
+-   [License](#license)
+
+<a name="installation"></a>## Code Examples
+
+# Installation
+
+You can install CoCreate-observer using the following methods:
+
+**CDN**
 
 ```html
-<script src="https://cdn.cocreate.app/observer/latest/CoCreate-observer.min.js"></script>
+<script src="[https://cdn.cocreate.app/observer/latest/CoCreate-observer.min.js](https://cdn.cocreate.app/observer/latest/CoCreate-observer.min.js)"></script>
 ```
 
-```html
-<script src="https://cdn.cocreate.app/observer/latest/CoCreate-observer.min.css"></script>
-```
-
-## NPM
+**npm**
 
 ```shell
 $ npm i @cocreate/observer
 ```
 
-## yarn
+**yarn**
 
 ```shell
 $ yarn install @cocreate/observer
 ```
 
-# Table of Contents
+<a name="examples"></a>
 
--   [Table of Contents](#table-of-contents)
--   [Announcements](#announcements)
--   [Roadmap](#roadmap)
--   [How to Contribute](#how-to-contribute)
--   [About](#about)
--   [License](#license)
+# Code Examples
+
+```javascript
+// Initialize an observer
+CoCreate.observer.init({
+	name: "my-observer",
+	types: ["attributes"],
+	selector: ".my-element",
+	callback: function (mutation) {
+		console.log("Mutation occurred:", mutation);
+	}
+});
+```
+
+<a name="parameter"></a>
+
+# Parameter Description
+
+The `init` function takes a configuration object with the following key parameters:
+
+-   `name`: A unique name for the observer.
+-   `types`: An array of mutation types to observe (e.g., "childList", "attributes").
+-   `selector`: A CSS selector to target elements.
+-   `callback`: The function to be executed when a mutation is detected.
 
 <a name="announcements"></a>
 
@@ -56,27 +88,36 @@ All updates to this library are documented in our [CHANGELOG](https://github.com
 
 # Roadmap
 
-If you are interested in the future direction of this project, please take a look at our open [issues](https://github.com/CoCreate-app/CoCreate-observer/issues) and [pull requests](https://github.com/CoCreate-app/CoCreate-observer/pulls). We would love to hear your feedback.
+If you are interested in the future direction of this project, please take a look at our open [issues](https://github.com/CoCreate-app/CoCreate-observer/issues) and [pull requests](https://github.com/CoCreate-app/CoCreate-observer/pulls). We are currently focused on improving performance for large-scale applications and adding support for custom mutation types. We would love to hear your feedback.
+
+<a name="contribute"></a>
+
+# Contributing
+
+We welcome contributions of all kinds, including bug fixes, new features, documentation improvements, and performance optimizations. We encourage community contributions to our libraries (you might even score some nifty swag), please see our [CONTRIBUTING](https://github.com/CoCreate-app/CoCreate-observer/blob/master/CONTRIBUTING.md) guide for details.
+
+We want this library to be community-driven, and CoCreate led. We need your help to realize this goal. To help make sure we are building the right things in the right order, we ask that you create [issues](https://github.com/CoCreate-app/CoCreate-observer/issues) and [pull requests](https://github.com/CoCreate-app/CoCreate-observer/pulls) or merely upvote or comment on existing issues or pull requests.
+
+We appreciate your continued support, thank you!
 
 <a name="about"></a>
 
 # About
 
-CoCreate-observer is guided and supported by the CoCreate Developer Experience Team.
+CoCreate-observer is a JavaScript library that simplifies the process of monitoring changes in the DOM (Document Object Model). It provides a robust and efficient way to detect and respond to mutations, such as changes to attributes, additions or removals of nodes, and modifications to text content. CoCreate-observer allows developers to easily register callbacks that are triggered when specific elements matching a selector undergo the specified mutations.
+
+Key features include:
+
+-   Efficient selector matching
+-   Debouncing to optimize performance
+-   Flexible configuration options
+-   Cross-browser compatibility
+
+CoCreate-observer is part of the CoCreate suite of open-source tools designed to accelerate web development and empower developers to build dynamic, interactive applications more efficiently. CoCreate aims to provide a comprehensive and modular ecosystem for modern web development.
 
 Please Email the Developer Experience Team [here](mailto:develop@cocreate.app) in case of any queries.
 
 CoCreate-observer is maintained and funded by CoCreate. The names and logos for CoCreate are trademarks of CoCreate, LLC.
-
-<a name="contribute"></a>
-
-# How to Contribute
-
-We encourage contribution to our libraries (you might even score some nifty swag), please see our [CONTRIBUTING](https://github.com/CoCreate-app/CoCreate-observer/blob/master/CONTRIBUTING.md) guide for details.
-
-We want this library to be community-driven, and CoCreate led. We need your help to realize this goal. To help make sure we are building the right things in the right order, we ask that you create [issues](https://github.com/CoCreate-app/CoCreate-observer/issues) and [pull requests](https://github.com/CoCreate-app/CoCreate-observer/pulls) or merely upvote or comment on existing issues or pull requests.
-
-We appreciate your continued support, thank you!
 
 <a name="license"></a>
 
@@ -88,4 +129,4 @@ This software is dual-licensed under the GNU Affero General Public License versi
 
 -   **Commercial Use**: For-profit companies and individuals intending to use this software for commercial purposes must obtain a commercial license. The commercial license is available when you sign up for an API key on our [website](https://cocreate.app). This license permits proprietary use and modification of the software without the copyleft requirements of the AGPLv3. It is ideal for integrating this software into proprietary commercial products and applications.
 
-If you have not purchased a commercial license and intend to use this software for commercial purposes, you are required to sign up for an API key on our website.
+Please ensure you understand and comply with the appropriate license terms for your use case.
