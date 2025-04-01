@@ -138,6 +138,19 @@ observer.prototype.parseSelector = function (config) {
 			// Store for matches() handling
 			complexSelector += selector + ",";
 		} else {
+			// ToDo: potentially handle complex selectors by geting the selector that targets the element inorder to check for initial matches prior to running match()
+
+			// const selectorObject = {
+			// 	id: [],
+			// 	count: 0
+			// }
+
+			// if (this.isComplexSelector(selector)) {
+			// 	// only apply if match is required
+			// 	selectorObject.selector = selector;
+			// 	selector = parseComplexSelector(selector);
+			// }
+
 			// Parse compound selector
 			const regex = /^(\w+)?(#[\w-]+)?((?:\.[\w-]+)*)(\[[^\]]+\])?$/;
 			const match = regex.exec(selector);
@@ -214,6 +227,31 @@ observer.prototype.isComplexSelector = function (selector) {
 	const combinedRegex = /[\s>~+:](?![^\[]*\])|\[[^\]]*[~|^$*]=/g;
 	return combinedRegex.test(selector);
 };
+
+function parseComplexSelector(selector) {
+	// Remove :not(...) and :has(...)
+	selector = selector
+		.replace(/:(not|has)\([^)]*\)/g, "")
+		.replaceAll(")", "")
+		.trim();
+
+	// Split the selector by spaces
+	const parts = selector.split(" ");
+
+	// Get the last part
+	let lastPart = parts.pop();
+
+	// Check if the last part contains a pseudo-class or pseudo-element
+	const colonIndex = lastPart.indexOf(":");
+
+	if (colonIndex === -1) {
+		// No pseudo-class/element, return the last part as is
+		return lastPart;
+	} else {
+		// Return the part before the first colon
+		return lastPart.substring(0, colonIndex) || "";
+	}
+}
 
 observer.prototype.processMutations = function (mutationsList) {
 	const createMutation = (node, mutation, type) => {
