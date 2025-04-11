@@ -45,9 +45,11 @@ function observer(doc) {
 	};
 	this.unInintNames = new Set();
 
-	const observer = new MutationObserver((mutationsList) =>
-		this.processMutations(mutationsList)
-	);
+	const observer = new MutationObserver((mutationsList) => {
+		requestAnimationFrame(() => {
+			this.processMutations(mutationsList);
+		});
+	});
 
 	observer.observe(doc, {
 		subtree: true,
