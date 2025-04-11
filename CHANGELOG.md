@@ -1,3 +1,16 @@
+# [1.18.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.17.1...v1.18.0) (2025-04-11)
+
+
+### Bug Fixes
+
+* removed requestAnmationFrame ([9547ac2](https://github.com/CoCreate-app/CoCreate-observer/commit/9547ac2a53e81a081f19595ae74d8e6c2746d1e5))
+* update readme details ([e20a14f](https://github.com/CoCreate-app/CoCreate-observer/commit/e20a14f1326019a5e818c983b8fdd759ab1ace1d))
+
+
+### Features
+
+* Refactor observer initialization and uninitialization for improved performance and clarity ([e907964](https://github.com/CoCreate-app/CoCreate-observer/commit/e907964ec1467b113d1f030cdee8c2598f3002fe))
+
 ## [1.17.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.17.0...v1.17.1) (2024-12-14)
 
 
