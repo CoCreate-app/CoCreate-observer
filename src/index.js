@@ -107,7 +107,7 @@ observer.prototype.init = function (config) {
 
 		if (conf.types.includes("attributes")) {
 			let attributeFilter = conf.attributeFilter;
-			if (!attributeFilter && !attributeFilter.length) {
+			if (!attributeFilter || !attributeFilter.length) {
 				attributeFilter = [""];
 			}
 
@@ -409,11 +409,12 @@ observer.prototype.executeCallbacks = function (mutation) {
 		for (const config of undefinedConfigs) {
 			if (
 				mutation.type === "attributes" &&
-				attributeCallbackIds.includes(config.id)
-			) {
-				executedConfigIds.add(config.id);
-				config.callback(mutation);
-			}
+				!attributeCallbackIds.includes(config.id)
+			)
+				continue;
+
+			executedConfigIds.add(config.id);
+			config.callback(mutation);
 		}
 	}
 
@@ -428,7 +429,11 @@ observer.prototype.executeCallbacks = function (mutation) {
 	// Execute callbacks for selector-based matches (Medium)
 	for (const id in callbackCounts) {
 		const idParts = id.split("-");
-		if (executedConfigIds.has(idParts[1])) {
+		if (
+			executedConfigIds.has(idParts[1]) ||
+			(mutation.type === "attributes" &&
+				!attributeCallbackIds.includes(idParts[1]))
+		) {
 			continue;
 		}
 
@@ -447,7 +452,11 @@ observer.prototype.executeCallbacks = function (mutation) {
 	if (complexSelectors) {
 		for (const [selector, configIds] of complexSelectors) {
 			for (const configId of configIds) {
-				if (executedConfigIds.has(configId)) {
+				if (
+					executedConfigIds.has(configId) ||
+					(mutation.type === "attributes" &&
+						!attributeCallbackIds.includes(configId))
+				) {
 					continue;
 				}
 
