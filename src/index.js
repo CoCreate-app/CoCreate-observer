@@ -312,8 +312,13 @@ observer.prototype.processMutations = function (mutationsList) {
 				}
 				break;
 			case "attributes":
-			case "characterData":
 				this.executeCallbacks(mutation);
+				break;
+
+			case "characterData":
+				if (mutation.target.isConnected) {
+					this.executeCallbacks(mutation);
+				}
 				break;
 		}
 	}
