@@ -1,3 +1,15 @@
+## [1.18.1](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.18.0...v1.18.1) (2025-04-30)
+
+
+### Bug Fixes
+
+* added css-loader ([4fb5afc](https://github.com/CoCreate-app/CoCreate-observer/commit/4fb5afcc71856b9192ca929858cc7c43a40467c1))
+* exclude configs from firing callback ([c5e9c91](https://github.com/CoCreate-app/CoCreate-observer/commit/c5e9c9121e1f7d6959cf61fd62cb21a10900c107))
+* if type characterData and isConnected false return ([0f6cb37](https://github.com/CoCreate-app/CoCreate-observer/commit/0f6cb37b8e4d8148c9bdb87c0bc528ee08db88b4))
+* update query attributes ([0b017eb](https://github.com/CoCreate-app/CoCreate-observer/commit/0b017eb02fef299ee5079b43eaae69db3123490c))
+* updated cocreate modules versions ([bcef690](https://github.com/CoCreate-app/CoCreate-observer/commit/bcef690ecbd31c9ba30c3b4ef9bac7ce10dbb393))
+* webpack.config and devdependencies ([0c99692](https://github.com/CoCreate-app/CoCreate-observer/commit/0c9969274cea13e89bd93c564415bcd8284b3bee))
+
 # [1.18.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.17.1...v1.18.0) (2025-04-11)
 
 
