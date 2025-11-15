@@ -342,6 +342,7 @@ observer.prototype.everyElement = function everyElement(el, callback) {
 };
 
 observer.prototype.executeCallbacks = function (mutation) {
+	try {
 	let target = mutation.target; //
 	if (target && target.nodeType !== Node.ELEMENT_NODE) {
 		target = target.parentElement;
@@ -474,6 +475,9 @@ observer.prototype.executeCallbacks = function (mutation) {
 			}
 		}
 	}
+} catch(error) {
+
+}
 };
 
 observer.prototype.uninit = function (name) {
