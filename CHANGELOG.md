@@ -1,3 +1,10 @@
+## [1.18.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.18.2...v1.18.3) (2025-11-16)
+
+
+### Bug Fixes
+
+* add error handling in executeCallbacks method ([a2b85ef](https://github.com/CoCreate-app/CoCreate-observer/commit/a2b85ef5cc59329aa2a0a38936bfb796342d0ed1))
+
 ## [1.18.2](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.18.1...v1.18.2) (2025-05-01)
 
 
