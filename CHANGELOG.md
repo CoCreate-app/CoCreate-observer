@@ -1,3 +1,10 @@
+## [1.18.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.18.3...v1.18.4) (2026-02-04)
+
+
+### Bug Fixes
+
+* update worklow ([0764c32](https://github.com/CoCreate-app/CoCreate-observer/commit/0764c32ef692d845299047d25b9e977afff5ef96))
+
 ## [1.18.3](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.18.2...v1.18.3) (2025-11-16)
 
 
