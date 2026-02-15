@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.18.4...v1.19.0) (2026-02-15)
+
+
+### Features
+
+* enhance observer initialization and selector parsing for improved performance and clarity ([5909b16](https://github.com/CoCreate-app/CoCreate-observer/commit/5909b169de7a2f9b7dcf105f49b8de88f54e8179))
+
 ## [1.18.4](https://github.com/CoCreate-app/CoCreate-observer/compare/v1.18.3...v1.18.4) (2026-02-04)
 
 
